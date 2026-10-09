@@ -43,6 +43,10 @@ Parameters:
   AiModel:
     Type: String
     Default: gemini-3.5-flash
+  AiCopilotModel:
+    Type: String
+    Default: gemini-3.6-flash
+    Description: Model for the copilot (its own free-tier quota); empty = AiModel
   AiFallbackModels:
     Type: String
     Default: gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash,gemini-3.7-flash,gemini-3.8-flash
@@ -173,6 +177,7 @@ Resources:
           AI_MODEL: !Ref AiModel
           AI_KEY_PARAM: !Ref AiKeyParam
           AI_FALLBACK_MODELS: !Ref AiFallbackModels
+          AI_COPILOT_MODEL: !Ref AiCopilotModel
           AI_CACHE: "true"
           EMAIL_FROM: !Ref EmailFrom
           SITE_URL: !Ref SiteUrl

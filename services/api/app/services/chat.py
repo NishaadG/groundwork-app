@@ -52,7 +52,7 @@ def bedrock_model(role: copilot.Role) -> Model:
 
         return GeminiModel(
             client_args={"api_key": ai.api_key()},
-            model_id=s.ai_model,
+            model_id=s.ai_copilot_model or s.ai_model,
             params={"temperature": temperature, "max_output_tokens": 1500},
         )
     if s.ai_provider == "openai":
@@ -60,7 +60,7 @@ def bedrock_model(role: copilot.Role) -> Model:
 
         return OpenAIModel(
             client_args={"api_key": ai.api_key(), "base_url": s.ai_base_url},
-            model_id=s.ai_model,
+            model_id=s.ai_copilot_model or s.ai_model,
             params=ai.openai_params(temperature, 1500),
         )
     return BedrockModel(

@@ -42,6 +42,8 @@ class Settings(BaseSettings):
     ai_provider: Literal["bedrock", "openai", "gemini"] = "bedrock"
     ai_base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
     ai_model: str = "gemini-3.5-flash"
+    # The copilot can use its own model, so its free-tier daily quota is separate from photo reading
+    ai_copilot_model: str = ""
     ai_fallback_models: str = (
         "gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash,"
         "gemini-3.7-flash,gemini-3.8-flash"
