@@ -35,6 +35,17 @@ class Settings(BaseSettings):
     text_model_id: str = "apac.amazon.nova-lite-v1:0"
     ai_calls_per_hour: int = 30
 
+    # Alternatives to Bedrock. openai: any OpenAI-compatible endpoint for photos and the copilot.
+    # gemini: Gemini's OpenAI-compatible endpoint for photos, its native API for the copilot
+    # (multi-turn tool use there needs thought signatures passed back, which only it keeps).
+    # The key lives in SSM (SecureString); AI_API_KEY is for local runs only.
+    ai_provider: Literal["bedrock", "openai", "gemini"] = "bedrock"
+    ai_base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
+    ai_model: str = "gemini-3.5-flash"
+    ai_reasoning_effort: str = ""
+    ai_key_param: str = ""
+    ai_api_key: str = ""
+
     # SES sender for pickup emails; empty = no email (the partner's phone is shown instead)
     email_from: str = ""
     # Public site address, for links in emails

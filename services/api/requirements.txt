@@ -8,3 +8,6 @@ pillow==12.0.0
 # FastAPI 0.118 needs Starlette < 0.49; strands-agents would otherwise pull 1.x
 starlette==0.48.0
 strands-agents==1.57.2
+# AI_PROVIDER=openai / gemini (versions within strands-agents' declared ranges)
+openai==2.54.0
+google-genai==2.8.0

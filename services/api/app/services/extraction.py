@@ -1,8 +1,9 @@
 """Bill extraction: AI reads, code checks, the user confirms.
 
-Nova Lite on Bedrock reads the photo into a fixed JSON schema (forced tool use,
-temperature 0). Every value then goes through checks in code; a failed check
-downgrades that field to `low` so the confirm screen makes the user look at it.
+The model (Nova Lite on Bedrock, or the configured alternative) reads the photo
+into a fixed JSON schema (forced tool use, temperature 0). Every value then goes
+through checks in code; a failed check downgrades that field to `low` so the
+confirm screen makes the user look at it.
 Text read from the image is data only and never acted on.
 """
 
@@ -11,12 +12,9 @@ import logging
 import re
 import time
 from datetime import date
-from functools import cache
 from pathlib import Path
 from typing import Any, Literal
 
-import boto3
-from botocore.config import Config
 from PIL import Image, ImageOps
 from pydantic import BaseModel
 
@@ -24,6 +22,7 @@ from app import db, storage
 from app.calc.tariff import BillContext, bill_total, load_tariff
 from app.config import get_settings
 from app.errors import ApiError
+from app.services import ai
 
 log = logging.getLogger("groundwork.extraction")
 
@@ -90,18 +89,9 @@ class Extraction(BaseModel):
 # ---- Bedrock ----
 
 
-@cache
-def _bedrock() -> Any:
-    s = get_settings()
-    return boto3.client(
-        "bedrock-runtime",
-        region_name=s.bedrock_region,
-        config=Config(read_timeout=60, retries={"max_attempts": 2, "mode": "standard"}),
-    )
-
-
 def bedrock() -> Any:
-    return _bedrock()
+    """The model client for the configured provider (Bedrock, or the Converse adapter)."""
+    return ai.client()
 
 
 def _image_block(data: bytes, content_type: str) -> dict[str, Any]:
@@ -145,7 +135,12 @@ def call_model(block: dict[str, Any]) -> dict[str, Any]:
 
 # ---- When the AI service itself is unavailable ----
 
-_UNAVAILABLE_HINTS = ("operation not allowed", "not authorized", "accessdenied", "being verified")
+_UNAVAILABLE_HINTS = (
+    "operation not allowed", "not authorized", "accessdenied", "being verified",
+    "api key not valid", "permission_denied", "resource_exhausted", "high demand",
+)  # fmt: skip
+# Raised by the copilot's OpenAI-compatible model on key or free-tier quota problems.
+_UNAVAILABLE_TYPES = ("AuthenticationError", "PermissionDeniedError", "ModelThrottledException")
 
 
 def ai_unavailable(exc: BaseException | None) -> bool:
@@ -153,6 +148,8 @@ def ai_unavailable(exc: BaseException | None) -> bool:
     as opposed to a bad photo or a passing error. Walks the exception chain."""
     seen = 0
     while exc is not None and seen < 10:
+        if isinstance(exc, ai.AiUnavailable) or type(exc).__name__ in _UNAVAILABLE_TYPES:
+            return True
         text = f"{type(exc).__name__} {exc}".lower()
         if any(h in text for h in _UNAVAILABLE_HINTS):
             return True

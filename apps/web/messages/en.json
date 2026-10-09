@@ -451,7 +451,7 @@
     "title": "About Groundwork",
     "p1": "Most Indian homes pay for electricity, water and waste disposal without seeing what they actually use. Bills arrive as a total. Leaks run silently in overhead tanks. Recyclables with real value go to landfill.",
     "p2": "Groundwork measures before it advises. It starts from your own bill, your own roof and your own meter, puts a rupee figure on each fix, and keeps score of what actually changed.",
-    "p3": "It is built on AWS, with Amazon Bedrock models reading photos and plain, tested code doing every calculation. It is independent: no DISCOM, installer or scheme pays for what we say.",
+    "p3": "It is built on AWS, with AI models reading photos and plain, tested code doing every calculation. It is independent: no DISCOM, installer or scheme pays for what we say.",
     "nameNote": "Not to be confused with the Groundwork environmental charities in the UK and USA. We're an Indian product for Indian homes.",
     "contactTitle": "Get in touch",
     "contactBody": "Questions, corrections to a tariff or a fact on this site, or a society that wants to try Groundwork: write to <email>{address}</email>."
@@ -473,7 +473,7 @@
     "notStore2": "Bill, meter and waste photos beyond 7 days. They are deleted automatically.",
     "notStore3": "Payment details. Groundwork doesn't take payments.",
     "aiTitle": "How AI is used",
-    "aiBody": "Photos you upload are sent to Amazon Bedrock models to read the numbers. Amazon does not use these inputs to train its models. Text read from a photo is treated as data only.",
+    "aiBody": "Photos you upload, and questions you ask the copilot, are sent to Google's Gemini models to read the numbers and write answers. Google may use these inputs to improve its services, and its reviewers may see them, so cover names and account numbers before you upload. Text read from a photo is treated as data only. Uploaded photos are deleted after 7 days.",
     "shareTitle": "Who sees your data",
     "shareBody": "Only you. If you join a housing society, other members see only combined totals, and your flat appears on the leaderboard only if you opt in. If you request a waste pickup, the recycler you choose gets the items, their rough weights, your preferred date, your note and your email address, so they can reach you. We don't sell your data or share it with installers or anyone else.",
     "controlTitle": "Your controls",

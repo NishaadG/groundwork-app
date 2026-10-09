@@ -32,6 +32,21 @@ Parameters:
     Type: String
     Default: apac.amazon.nova-lite-v1:0
     Description: Bedrock model or inference profile for bill/meter/waste photos
+  AiProvider:
+    Type: String
+    Default: bedrock
+    AllowedValues: [bedrock, openai, gemini]
+    Description: bedrock; openai for an OpenAI-compatible endpoint (AiBaseUrl, AiModel); gemini for Google's
+  AiBaseUrl:
+    Type: String
+    Default: https://generativelanguage.googleapis.com/v1beta/openai/
+  AiModel:
+    Type: String
+    Default: gemini-3.5-flash
+  AiKeyParam:
+    Type: String
+    Default: /groundwork/ai-key
+    Description: SSM SecureString parameter holding the OpenAI-compatible API key
   EmailFrom:
     Type: String
     Default: ""
@@ -149,6 +164,10 @@ Resources:
           BEDROCK_REGION: !Ref BedrockRegion
           VISION_MODEL_ID: !Ref VisionModelId
           TEXT_MODEL_ID: !Ref VisionModelId # Nova Lite also writes the bill tips
+          AI_PROVIDER: !Ref AiProvider
+          AI_BASE_URL: !Ref AiBaseUrl
+          AI_MODEL: !Ref AiModel
+          AI_KEY_PARAM: !Ref AiKeyParam
           EMAIL_FROM: !Ref EmailFrom
           SITE_URL: !Ref SiteUrl
       Policies:
@@ -174,6 +193,10 @@ Resources:
               Resource:
                 - !Sub arn:aws:bedrock:${BedrockRegion}:${AWS::AccountId}:inference-profile/${VisionModelId}
                 - arn:aws:bedrock:*::foundation-model/amazon.nova-lite-v1:0
+            - Sid: ReadAiKey
+              Effect: Allow
+              Action: ssm:GetParameter
+              Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${AiKeyParam}
         - !If
           - HasUserPool
           - Statement:

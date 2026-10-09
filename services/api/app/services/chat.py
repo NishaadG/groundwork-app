@@ -21,7 +21,7 @@ from app.agents import copilot, rules
 from app.agents.guard import untraced_numbers
 from app.config import get_settings
 from app.errors import ApiError
-from app.services import extraction
+from app.services import ai, extraction
 
 log = logging.getLogger("groundwork.chat")
 
@@ -46,6 +46,23 @@ class ChatIn(BaseModel):
 
 def bedrock_model(role: copilot.Role) -> Model:
     s = get_settings()
+    temperature = 0.2 if role == "orchestrator" else 0.3
+    if s.ai_provider == "gemini":
+        from strands.models.gemini import GeminiModel
+
+        return GeminiModel(
+            client_args={"api_key": ai.api_key()},
+            model_id=s.ai_model,
+            params={"temperature": temperature, "max_output_tokens": 1500},
+        )
+    if s.ai_provider == "openai":
+        from strands.models.openai import OpenAIModel
+
+        return OpenAIModel(
+            client_args={"api_key": ai.api_key(), "base_url": s.ai_base_url},
+            model_id=s.ai_model,
+            params=ai.openai_params(temperature, 1500),
+        )
     return BedrockModel(
         model_id=s.text_model_id,
         region_name=s.bedrock_region,
@@ -132,7 +149,6 @@ async def stream(
             yield chunk
         return
     history = [{"role": t["role"], "content": [{"text": t["text"]}]} for t in turns]
-    agent = copilot.build(session, lang, model_for, history)
     text = body.message.strip()
     if session.attachment:
         text = f"[The user attached a {session.attachment.kind} photo.]\n{text}"
@@ -142,6 +158,7 @@ async def stream(
     seen_tool_ids: set[str] = set()
     sent_cards = 0
     try:
+        agent = copilot.build(session, lang, model_for, history)
         async for ev in agent.stream_async(text):
             if "data" in ev and isinstance(ev["data"], str) and ev["data"]:
                 reply.append(ev["data"])

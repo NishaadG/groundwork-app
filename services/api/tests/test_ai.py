@@ -1,0 +1,133 @@
+"""The Converse <-> OpenAI-compatible adapter used when AI_PROVIDER=openai."""
+
+import json
+from types import SimpleNamespace as NS
+from typing import Any
+
+import pytest
+
+from app.config import get_settings
+from app.services import ai, extraction
+
+SCHEMA = {"type": "object", "properties": {"reading": {"type": ["number", "null"]}}}
+
+
+def converse_request(block: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "modelId": "apac.amazon.nova-lite-v1:0",
+        "system": [{"text": "Be careful."}],
+        "messages": [{"role": "user", "content": [block, {"text": "Read the meter."}]}],
+        "toolConfig": {
+            "tools": [
+                {
+                    "toolSpec": {
+                        "name": "record_meter",
+                        "description": "Record the meter reading.",
+                        "inputSchema": {"json": SCHEMA},
+                    }
+                }
+            ],
+            "toolChoice": {"tool": {"name": "record_meter"}},
+        },
+        "inferenceConfig": {"temperature": 0, "maxTokens": 300},
+    }
+
+
+def completion(args: str, finish: str = "tool_calls") -> Any:
+    call = NS(id="call_1", function=NS(name="record_meter", arguments=args))
+    return NS(choices=[NS(message=NS(content=None, tool_calls=[call]), finish_reason=finish)])
+
+
+class FakeOpenAI:
+    def __init__(self, result: Any = None, error: Exception | None = None) -> None:
+        self.calls: list[dict[str, Any]] = []
+        self.result, self.error = result, error
+        self.chat = NS(completions=NS(create=self.create))
+
+    def create(self, **kw: Any) -> Any:
+        self.calls.append(kw)
+        if self.error:
+            raise self.error
+        return self.result
+
+
+@pytest.fixture(autouse=True)
+def _settings() -> Any:
+    get_settings.cache_clear()
+    yield
+    get_settings.cache_clear()
+
+
+def test_forced_tool_call_with_an_image_round_trips() -> None:
+    fake = FakeOpenAI(completion(json.dumps({"reading": 1234.5})))
+    image = {"image": {"format": "jpeg", "source": {"bytes": b"\xff\xd8jpeg"}}}
+    res = ai.OpenAIConverse(fake, "gemini-x").converse(**converse_request(image))
+
+    req = fake.calls[0]
+    assert req["model"] == "gemini-x"  # the Bedrock model id is not sent
+    assert req["messages"][0] == {"role": "system", "content": "Be careful."}
+    img, text = req["messages"][1]["content"]
+    assert img["image_url"]["url"].startswith("data:image/jpeg;base64,/9hq")
+    assert text == {"type": "text", "text": "Read the meter."}
+    assert req["tools"][0]["function"]["name"] == "record_meter"
+    assert req["tools"][0]["function"]["parameters"] == SCHEMA
+    assert req["tool_choice"] == {"type": "function", "function": {"name": "record_meter"}}
+    assert req["temperature"] == 0 and req["max_tokens"] >= 300
+
+    assert res["stopReason"] == "tool_use"
+    [part] = res["output"]["message"]["content"]
+    assert part["toolUse"]["name"] == "record_meter"
+    assert part["toolUse"]["input"] == {"reading": 1234.5}
+
+
+def test_bad_tool_arguments_are_dropped_and_retried_once() -> None:
+    fake = FakeOpenAI(completion("not json", finish="stop"))
+    res = ai.OpenAIConverse(fake, "m").converse(**converse_request({"text": "hi"}))
+    assert res["output"]["message"]["content"] == []
+    assert len(fake.calls) == 2
+
+
+def test_pdf_goes_to_manual_entry_without_calling_the_model() -> None:
+    fake = FakeOpenAI()
+    pdf = {"document": {"format": "pdf", "name": "bill", "source": {"bytes": b"%PDF"}}}
+    with pytest.raises(ai.AiUnavailable) as err:
+        ai.OpenAIConverse(fake, "m").converse(**converse_request(pdf))
+    assert fake.calls == []
+    assert extraction.ai_unavailable(err.value)
+
+
+@pytest.mark.parametrize("name", ["AuthenticationError", "RateLimitError", "PermissionDeniedError"])
+def test_key_and_quota_errors_mean_unavailable(name: str) -> None:
+    fake = FakeOpenAI(error=type(name, (Exception,), {})("quota exceeded"))
+    with pytest.raises(ai.AiUnavailable) as err:
+        ai.OpenAIConverse(fake, "m").converse(**converse_request({"text": "hi"}))
+    assert extraction.ai_unavailable(err.value)
+
+
+def test_other_errors_are_not_unavailable() -> None:
+    fake = FakeOpenAI(error=ValueError("bad gateway"))
+    with pytest.raises(ValueError) as err:
+        ai.OpenAIConverse(fake, "m").converse(**converse_request({"text": "hi"}))
+    assert not extraction.ai_unavailable(err.value)
+
+
+def test_provider_switch(monkeypatch: pytest.MonkeyPatch) -> None:
+    ai._openai_converse.cache_clear()
+    ai.api_key.cache_clear()
+    monkeypatch.setenv("AI_PROVIDER", "openai")
+    monkeypatch.setenv("AI_API_KEY", "test-key")
+    monkeypatch.setenv("AI_MODEL", "gemini-test")
+    client = extraction.bedrock()
+    assert isinstance(client, ai.OpenAIConverse) and client.model == "gemini-test"
+    ai._openai_converse.cache_clear()
+    ai.api_key.cache_clear()
+
+
+def test_missing_key_is_unavailable(monkeypatch: pytest.MonkeyPatch) -> None:
+    ai.api_key.cache_clear()
+    monkeypatch.setenv("AI_PROVIDER", "openai")
+    monkeypatch.setenv("AI_KEY_PARAM", "")
+    monkeypatch.setenv("AI_API_KEY", "")
+    with pytest.raises(ai.AiUnavailable):
+        ai.api_key()
+    ai.api_key.cache_clear()
