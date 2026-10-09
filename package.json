@@ -1,0 +1,25 @@
+{
+  "name": "groundwork",
+  "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@12.8.2",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:web": "pnpm --filter @groundwork/web dev",
+    "build:web": "pnpm --filter @groundwork/web build",
+    "lint:web": "pnpm --filter @groundwork/web lint",
+    "typecheck:web": "pnpm --filter @groundwork/web typecheck"
+  },
+  "devDependencies": {
+    "@aws-amplify/backend": "^1.25.1",
+    "@aws-amplify/backend-cli": "^1.10.0",
+    "@types/node": "^20.19.43",
+    "aws-cdk-lib": "^2.271.0",
+    "constructs": "^10.8.1",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}

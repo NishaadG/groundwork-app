@@ -1,0 +1,35 @@
+version: 1
+applications:
+  - appRoot: apps/web
+    backend:
+      phases:
+        build:
+          commands:
+            - nvm install 22 && nvm use 22
+            - npm install -g pnpm@12.8.2
+            # Commands run from apps/web; --dir points pnpm at the repo root without cd
+            - pnpm --dir ../.. install --frozen-lockfile
+            # Deploys amplify/ (Cognito) and writes apps/web/amplify_outputs.json
+            - pnpm --dir ../.. exec ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID --outputs-out-dir apps/web
+            # The frontend shares this container: drop the CDK tooling and its build output so
+            # the server bundle stays small (otherwise packaging runs out of memory)
+            - rm -rf ../../node_modules ../../.amplify
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 22 && nvm use 22
+            - npm install -g pnpm@12.8.2
+            # Only the web app and its dependencies
+            - pnpm --dir ../.. install --frozen-lockfile --filter "@groundwork/web..."
+        build:
+          commands:
+            - pnpm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - "**/*"
+      cache:
+        paths:
+          - .next/cache/**/*
+          - node_modules/**/*

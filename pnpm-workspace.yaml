@@ -1,0 +1,13 @@
+# Amplify Hosting needs a flat node_modules for Next.js SSR (pnpm 10+ reads this here, not from .npmrc)
+nodeLinker: hoisted
+
+packages:
+  - "apps/*"
+  - "packages/*"
+allowBuilds:
+  '@aws-amplify/hosting': false
+  '@parcel/watcher': false
+  '@swc/core': false
+  core-js: false
+  esbuild: true
+  unrs-resolver: true

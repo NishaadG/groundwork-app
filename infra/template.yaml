@@ -1,0 +1,249 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Groundwork API (FastAPI on Lambda via Lambda Web Adapter), DynamoDB table and uploads bucket
+
+Parameters:
+  Stage:
+    Type: String
+    AllowedValues: [dev, prod]
+    Default: dev
+  WebAdapterLayerVersion:
+    Type: Number
+    Default: 30
+    Description: LambdaAdapterLayerArm64 version (github.com/awslabs/aws-lambda-web-adapter)
+  CognitoUserPoolId:
+    Type: String
+    Default: ""
+    Description: From amplify_outputs.json (auth.user_pool_id). Empty until Amplify auth is deployed.
+  CognitoClientIds:
+    Type: String
+    Default: ""
+    Description: App client ids allowed as token audience, comma-separated (JSON list also accepted)
+  CorsOrigins:
+    Type: String
+    Default: "http://localhost:3000"
+    Description: Web origins allowed by CORS, comma-separated (the Amplify domain)
+
+  BedrockRegion:
+    Type: String
+    Default: ap-south-1
+    Description: Region for Bedrock calls, if Nova isn't available in ap-south-1
+  VisionModelId:
+    Type: String
+    Default: apac.amazon.nova-lite-v1:0
+    Description: Bedrock model or inference profile for bill/meter/waste photos
+  EmailFrom:
+    Type: String
+    Default: ""
+    Description: SES-verified sender for pickup and reminder emails. Empty = no email is sent.
+  SiteUrl:
+    Type: String
+    Default: "http://localhost:3000"
+    Description: Public web address, for links in emails
+
+Conditions:
+  HasUserPool: !Not [!Equals [!Ref CognitoUserPoolId, ""]]
+  IsProd: !Equals [!Ref Stage, prod]
+  HasEmail: !Not [!Equals [!Ref EmailFrom, ""]]
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures: [arm64]
+    MemorySize: 1024
+    Timeout: 60
+
+Resources:
+  Table:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub groundwork-${Stage}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - { AttributeName: PK, AttributeType: S }
+        - { AttributeName: SK, AttributeType: S }
+        - { AttributeName: GSI1PK, AttributeType: S }
+        - { AttributeName: GSI1SK, AttributeType: S }
+      KeySchema:
+        - { AttributeName: PK, KeyType: HASH }
+        - { AttributeName: SK, KeyType: RANGE }
+      GlobalSecondaryIndexes:
+        - IndexName: GSI1
+          KeySchema:
+            - { AttributeName: GSI1PK, KeyType: HASH }
+            - { AttributeName: GSI1SK, KeyType: RANGE }
+          Projection: { ProjectionType: ALL }
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [IsProd, true, false]
+
+  UploadsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub groundwork-uploads-${Stage}-${AWS::AccountId}
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules: [{ ObjectOwnership: BucketOwnerEnforced }]
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 }
+      LifecycleConfiguration:
+        Rules:
+          - Id: delete-raw-uploads-after-7-days
+            Status: Enabled
+            Prefix: uploads/
+            ExpirationInDays: 7
+          - Id: abort-incomplete-multipart
+            Status: Enabled
+            AbortIncompleteMultipartUpload: { DaysAfterInitiation: 1 }
+      CorsConfiguration:
+        CorsRules:
+          - AllowedMethods: [POST, GET]
+            AllowedOrigins: ["*"] # presigned POST policies already restrict what can be uploaded
+            AllowedHeaders: ["*"]
+            MaxAge: 3000
+
+  UploadsBucketTlsOnly:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref UploadsBucket
+      PolicyDocument:
+        Statement:
+          - Sid: DenyInsecureTransport
+            Effect: Deny
+            Principal: "*"
+            Action: "s3:*"
+            Resource:
+              - !GetAtt UploadsBucket.Arn
+              - !Sub "${UploadsBucket.Arn}/*"
+            Condition: { Bool: { "aws:SecureTransport": "false" } }
+
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub groundwork-api-${Stage}
+      # Built by scripts/build_api.sh (Linux arm64 wheels, no Docker needed)
+      CodeUri: .build/api
+      Handler: run.sh
+      Layers:
+        - !Sub arn:aws:lambda:${AWS::Region}:753240598075:layer:LambdaAdapterLayerArm64:${WebAdapterLayerVersion}
+      Environment:
+        Variables:
+          AWS_LAMBDA_EXEC_WRAPPER: /opt/bootstrap
+          AWS_LWA_INVOKE_MODE: response_stream
+          AWS_LWA_READINESS_CHECK_PATH: /health
+          PORT: "8080"
+          STAGE: !Ref Stage
+          TABLE_NAME: !Ref Table
+          UPLOADS_BUCKET: !Ref UploadsBucket
+          COGNITO_REGION: !Ref AWS::Region
+          COGNITO_USER_POOL_ID: !Ref CognitoUserPoolId
+          COGNITO_CLIENT_IDS: !Ref CognitoClientIds
+          CORS_ORIGINS: !Ref CorsOrigins
+          BEDROCK_REGION: !Ref BedrockRegion
+          VISION_MODEL_ID: !Ref VisionModelId
+          TEXT_MODEL_ID: !Ref VisionModelId # Nova Lite also writes the bill tips
+          EMAIL_FROM: !Ref EmailFrom
+          SITE_URL: !Ref SiteUrl
+      Policies:
+        - DynamoDBCrudPolicy: { TableName: !Ref Table }
+        - Statement:
+            - Sid: UserFiles
+              Effect: Allow
+              Action: [s3:PutObject, s3:GetObject, s3:DeleteObject]
+              Resource:
+                - !Sub "${UploadsBucket.Arn}/uploads/*"
+                - !Sub "${UploadsBucket.Arn}/reports/*"
+            - Sid: ListUserFiles
+              Effect: Allow
+              Action: s3:ListBucket
+              Resource: !GetAtt UploadsBucket.Arn
+              Condition:
+                StringLike: { "s3:prefix": ["uploads/*", "reports/*"] }
+        - Statement:
+            - Sid: InvokeModels
+              Effect: Allow
+              # Converse for photo reading; ConverseStream (InvokeModelWithResponseStream) for the copilot
+              Action: [bedrock:InvokeModel, bedrock:InvokeModelWithResponseStream]
+              Resource:
+                - !Sub arn:aws:bedrock:${BedrockRegion}:${AWS::AccountId}:inference-profile/${VisionModelId}
+                - arn:aws:bedrock:*::foundation-model/amazon.nova-lite-v1:0
+        - !If
+          - HasUserPool
+          - Statement:
+              - Sid: DeleteOwnAccount
+                Effect: Allow
+                Action: cognito-idp:AdminDeleteUser
+                Resource: !Sub arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}
+          - !Ref AWS::NoValue
+        - !If
+          - HasEmail
+          - Statement:
+              - Sid: SendEmail
+                Effect: Allow
+                Action: ses:SendEmail
+                Resource: !Sub arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*
+          - !Ref AWS::NoValue
+      FunctionUrlConfig:
+        # Public URL by design: the API verifies the Cognito JWT itself
+        AuthType: NONE
+        InvokeMode: RESPONSE_STREAM
+
+  ApiFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/groundwork-api-${Stage}
+      RetentionInDays: 14
+
+  # Daily: emails a monthly leak-check reminder to households that turned it on
+  RemindersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub groundwork-reminders-${Stage}
+      CodeUri: .build/api
+      Handler: app.reminders_handler.handler
+      MemorySize: 256
+      Timeout: 300
+      Environment:
+        Variables:
+          STAGE: !Ref Stage
+          TABLE_NAME: !Ref Table
+          EMAIL_FROM: !Ref EmailFrom
+          SITE_URL: !Ref SiteUrl
+      Policies:
+        - DynamoDBCrudPolicy: { TableName: !Ref Table }
+        - !If
+          - HasEmail
+          - Statement:
+              - Sid: SendEmail
+                Effect: Allow
+                Action: ses:SendEmail
+                Resource: !Sub arn:aws:ses:${AWS::Region}:${AWS::AccountId}:identity/*
+          - !Ref AWS::NoValue
+      Events:
+        Daily:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: cron(30 4 * * ? *) # 10:00 IST
+            State: !If [HasEmail, ENABLED, DISABLED]
+
+  RemindersFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/groundwork-reminders-${Stage}
+      RetentionInDays: 14
+
+Outputs:
+  ApiUrl:
+    Description: Function URL for the API
+    Value: !GetAtt ApiFunctionUrl.FunctionUrl
+  TableName:
+    Value: !Ref Table
+  UploadsBucketName:
+    Value: !Ref UploadsBucket

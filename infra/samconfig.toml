@@ -1,0 +1,20 @@
+version = 0.1
+
+[default.global.parameters]
+region = "ap-south-1"
+
+[default.deploy.parameters]
+stack_name = "groundwork-api-dev"
+resolve_s3 = true
+s3_prefix = "groundwork-api-dev"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Stage=dev"
+confirm_changeset = false
+
+[prod.deploy.parameters]
+stack_name = "groundwork-api-prod"
+resolve_s3 = true
+s3_prefix = "groundwork-api-prod"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Stage=prod"
+confirm_changeset = true
