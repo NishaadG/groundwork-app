@@ -42,8 +42,13 @@ class Settings(BaseSettings):
     ai_provider: Literal["bedrock", "openai", "gemini"] = "bedrock"
     ai_base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
     ai_model: str = "gemini-3.5-flash"
-    ai_fallback_models: str = "gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash"
+    ai_fallback_models: str = (
+        "gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash,"
+        "gemini-3.7-flash,gemini-3.8-flash"
+    )
     ai_reasoning_effort: str = ""
+    # Reuse the stored answer for an identical photo and prompt (saves free-tier quota)
+    ai_cache: bool = False
     ai_key_param: str = ""
     ai_api_key: str = ""
 

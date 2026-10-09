@@ -152,3 +152,19 @@ def test_every_model_out_of_quota_is_unavailable() -> None:
     with pytest.raises(ai.AiUnavailable):
         ai.OpenAIConverse(fake, "a", ("b",)).converse(**converse_request({"text": "hi"}))
     assert [c["model"] for c in fake.calls] == ["a", "b"]
+
+
+def test_identical_request_is_answered_from_the_cache(
+    aws: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setenv("AI_CACHE", "true")
+    get_settings.cache_clear()
+    fake = FakeOpenAI(completion(json.dumps({"reading": 7})))
+    client = ai.OpenAIConverse(fake, "m")
+    image = {"image": {"format": "jpeg", "source": {"bytes": b"same-photo"}}}
+    first = client.converse(**converse_request(image))
+    second = client.converse(**converse_request(image))
+    assert first == second and len(fake.calls) == 1
+    other = {"image": {"format": "jpeg", "source": {"bytes": b"another-photo"}}}
+    client.converse(**converse_request(other))
+    assert len(fake.calls) == 2

@@ -7,8 +7,10 @@ so prompts and schemas don't change.
 """
 
 import base64
+import hashlib
 import json
 import logging
+import time
 from functools import cache
 from typing import Any
 
@@ -130,7 +132,46 @@ def from_openai(res: Any) -> dict[str, Any]:
 
 
 # Errors that mean "not available to us right now", not "bad photo".
-_UNAVAILABLE = ("AuthenticationError", "PermissionDeniedError", "RateLimitError", "NotFoundError")
+_UNAVAILABLE = (
+    "AuthenticationError", "PermissionDeniedError", "RateLimitError", "NotFoundError",
+    "InternalServerError", "APITimeoutError", "APIConnectionError",
+)  # fmt: skip
+
+
+# ---- Answer cache: the same photo and prompt gets the stored answer and uses no quota ----
+
+CACHE_DAYS = 7  # as long as uploaded photos are kept
+
+
+def _cache_key(req: dict[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(req, sort_keys=True).encode()).hexdigest()
+
+
+def _cache_get(key: str) -> dict[str, Any] | None:
+    from app import db
+
+    try:
+        item = db.table().get_item(Key={"PK": "CACHE#ai", "SK": key}).get("Item")
+        return json.loads(item["out"]) if item else None
+    except Exception:
+        log.warning("ai cache read failed", exc_info=True)
+        return None
+
+
+def _cache_put(key: str, out: dict[str, Any]) -> None:
+    from app import db
+
+    try:
+        db.table().put_item(
+            Item={
+                "PK": "CACHE#ai",
+                "SK": key,
+                "out": json.dumps(out),
+                "expiresAt": int(time.time()) + CACHE_DAYS * 86400,
+            }
+        )
+    except Exception:
+        log.warning("ai cache write failed", exc_info=True)
 
 
 class OpenAIConverse:
@@ -144,10 +185,16 @@ class OpenAIConverse:
     def converse(self, *, modelId: str = "", **kw: Any) -> dict[str, Any]:  # noqa: N803
         """Try the main model, then each fallback when one is out of quota (free-tier limits
         are per model) or gone."""
+        key = _cache_key(to_openai("", **kw)) if get_settings().ai_cache else None
+        if key and (hit := _cache_get(key)):
+            return hit
         failure: AiUnavailable | None = None
         for model in (self.model, *self.fallbacks):
             try:
-                return self._one(to_openai(model, **kw))
+                out = self._one(to_openai(model, **kw))
+                if key and any("toolUse" in p for p in out["output"]["message"]["content"]):
+                    _cache_put(key, out)
+                return out
             except AiUnavailable as exc:
                 failure = exc
                 log.warning("model %s unavailable, trying the next: %s", model, str(exc)[:120])
@@ -176,7 +223,7 @@ def _openai_converse() -> OpenAIConverse:
 
     s = get_settings()
     return OpenAIConverse(
-        openai.OpenAI(api_key=api_key(), base_url=s.ai_base_url, timeout=60, max_retries=2),
+        openai.OpenAI(api_key=api_key(), base_url=s.ai_base_url, timeout=45, max_retries=0),
         s.ai_model,
         tuple(m.strip() for m in s.ai_fallback_models.split(",") if m.strip()),
     )
