@@ -1,0 +1,70 @@
+{
+  "id": "bescom",
+  "discom": "BESCOM",
+  "name": "Bangalore Electricity Supply Company Ltd.",
+  "state": "KA",
+  "category": "LT-1 Domestic",
+  "fy": "2026-27",
+  "effective_from": "2026-04-01",
+  "effective_to": "2027-03-31",
+  "source": "KERC Combined Tariff Order 2025 (27 March 2025), Annexure 9, Tariff Schedule LT-1 for FY2026-27 (page 534). Pension and gratuity surcharge: KERC order of 18 March 2025. Electricity tax: Government of Karnataka, 9% under the Karnataka Electricity (Taxation on Consumption or Sale) Act.",
+  "source_url": "https://data.opencity.in/dataset/kerc-combined-tariff-order-2025/resource/9e85e018-34cd-48a3-93c7-0b95ecf804d4",
+  "billing_cycle_days": 30,
+  "slab_mode": "telescopic",
+  "slabs": [
+    {
+      "upto_units": null,
+      "energy_inr_per_kwh": 5.8
+    }
+  ],
+  "wheeling_inr_per_kwh": 0,
+  "fixed_charge": {
+    "mode": "per_kw",
+    "inr_per_kw": 150,
+    "min_kw": 1
+  },
+  "per_kwh_adders": [
+    {
+      "id": "pg_surcharge",
+      "label": "Pension and gratuity surcharge",
+      "inr_per_kwh": 0.35,
+      "source_url": "https://newstrailindia.com/inner.php?id=27148"
+    }
+  ],
+  "bill_inputs": [
+    {
+      "id": "fppca",
+      "label": "Fuel and power purchase cost adjustment (FPPCA)",
+      "kind": "per_kwh",
+      "default": 0,
+      "note": "Changes every month. We use the FPPCA printed on your bill, and ₹0 if it isn't shown."
+    }
+  ],
+  "percent_charges": [
+    {
+      "id": "electricity_tax",
+      "label": "Electricity tax",
+      "pct": 9,
+      "base": [
+        "fixed",
+        "energy"
+      ],
+      "source_url": "https://ksei.gov.in/electricity_tax.htm"
+    }
+  ],
+  "notes": [
+    "If you get free units under Gruha Jyothi, your savings will be lower than shown, because the scheme already covers part of your bill.",
+    "The FY 2024-25 true-up charge (May 2026 to April 2027) is fixed from last year's use, so solar doesn't change it. We leave it out."
+  ],
+  "net_metering": {
+    "allowed": true,
+    "max_kw_rule": "sanctioned_load",
+    "surplus": "monthly_settlement",
+    "note": "We don't carry extra units into later months for Karnataka, and count them as ₹0, so the savings shown are on the low side."
+  },
+  "common_area": {
+    "note": "Water supply installations and lifts serviced separately for residential complexes are billed on LT-1 Domestic; KERC added a common-area description for residential apartments.",
+    "source": "KERC Combined Tariff Order 2025 (27 March 2025), Tariff Schedule LT-1, item (n) (page 547), and para 6.5.6 (page 219).",
+    "source_url": "https://data.opencity.in/dataset/kerc-combined-tariff-order-2025/resource/9e85e018-34cd-48a3-93c7-0b95ecf804d4"
+  }
+}

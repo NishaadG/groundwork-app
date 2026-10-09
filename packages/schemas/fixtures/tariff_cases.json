@@ -1,0 +1,2282 @@
+[
+  {
+    "tariff": "msedcl",
+    "units": 0,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 20.8
+      },
+      "total": 150.8
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 0,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 69.6
+      },
+      "total": 504.6
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 45,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 178.2,
+        "wheeling": 72.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 60.832
+      },
+      "total": 441.032
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 45,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 178.2,
+        "wheeling": 72.0,
+        "adders": 0.0,
+        "fac": 15.749999999999998,
+        "electricity_duty": 112.15199999999999
+      },
+      "total": 813.102
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 100,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 396.0,
+        "wheeling": 160.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 109.76
+      },
+      "total": 795.76
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 100,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 396.0,
+        "wheeling": 160.0,
+        "adders": 0.0,
+        "fac": 35.0,
+        "electricity_duty": 164.16
+      },
+      "total": 1190.16
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 101,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 406.8,
+        "wheeling": 161.60000000000002,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 111.74400000000001
+      },
+      "total": 810.144
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 101,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 406.8,
+        "wheeling": 161.60000000000002,
+        "adders": 0.0,
+        "fac": 35.349999999999994,
+        "electricity_duty": 166.2
+      },
+      "total": 1204.95
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 250,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 2016.0,
+        "wheeling": 400.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 407.36
+      },
+      "total": 2953.36
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 250,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 2016.0,
+        "wheeling": 400.0,
+        "adders": 0.0,
+        "fac": 87.5,
+        "electricity_duty": 470.16
+      },
+      "total": 3408.66
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 2556.0,
+        "wheeling": 480.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 506.56
+      },
+      "total": 3672.56
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 2556.0,
+        "wheeling": 480.0,
+        "adders": 0.0,
+        "fac": 105.0,
+        "electricity_duty": 572.16
+      },
+      "total": 4148.16
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 301,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 2571.03,
+        "wheeling": 481.6,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 509.2208
+      },
+      "total": 3691.8508
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 301,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 2571.03,
+        "wheeling": 481.6,
+        "adders": 0.0,
+        "fac": 105.35,
+        "electricity_duty": 574.8768
+      },
+      "total": 4167.8568000000005
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 480,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 5261.4,
+        "wheeling": 768.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 985.5039999999999
+      },
+      "total": 7144.9039999999995
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 480,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 5261.4,
+        "wheeling": 768.0,
+        "adders": 0.0,
+        "fac": 168.0,
+        "electricity_duty": 1061.184
+      },
+      "total": 7693.584
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 650,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 8191.5,
+        "wheeling": 1040.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 1497.84
+      },
+      "total": 10859.34
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 650,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 8191.5,
+        "wheeling": 1040.0,
+        "adders": 0.0,
+        "fac": 227.49999999999997,
+        "electricity_duty": 1583.04
+      },
+      "total": 11477.039999999999
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 1300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 130.0,
+        "energy": 19586.0,
+        "wheeling": 2080.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "electricity_duty": 3487.36
+      },
+      "total": 25283.36
+    }
+  },
+  {
+    "tariff": "msedcl",
+    "units": 1300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 435.0,
+        "energy": 19586.0,
+        "wheeling": 2080.0,
+        "adders": 0.0,
+        "fac": 454.99999999999994,
+        "electricity_duty": 3608.96
+      },
+      "total": 26164.96
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 0,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 90.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 14.4
+      },
+      "total": 104.4
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 0,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 65.6
+      },
+      "total": 475.6
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 45,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 90.0,
+        "energy": 85.5,
+        "wheeling": 108.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 45.36
+      },
+      "total": 328.86
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 45,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 85.5,
+        "wheeling": 108.0,
+        "adders": 0.0,
+        "fac": 15.749999999999998,
+        "tax_on_sale": 9.0,
+        "electricity_duty": 99.08
+      },
+      "total": 727.33
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 100,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 90.0,
+        "energy": 190.0,
+        "wheeling": 240.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 83.2
+      },
+      "total": 603.2
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 100,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 190.0,
+        "wheeling": 240.0,
+        "adders": 0.0,
+        "fac": 35.0,
+        "tax_on_sale": 20.0,
+        "electricity_duty": 140.0
+      },
+      "total": 1035.0
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 101,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 194.7,
+        "wheeling": 242.39999999999998,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 91.53599999999999
+      },
+      "total": 663.636
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 101,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 194.7,
+        "wheeling": 242.39999999999998,
+        "adders": 0.0,
+        "fac": 35.349999999999994,
+        "tax_on_sale": 20.200000000000003,
+        "electricity_duty": 141.19199999999998
+      },
+      "total": 1043.8419999999999
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 250,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 895.0,
+        "wheeling": 600.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 260.8
+      },
+      "total": 1890.8
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 250,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 895.0,
+        "wheeling": 600.0,
+        "adders": 0.0,
+        "fac": 87.5,
+        "tax_on_sale": 50.0,
+        "electricity_duty": 318.8
+      },
+      "total": 2361.3
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 1130.0,
+        "wheeling": 720.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 317.6
+      },
+      "total": 2302.6
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 1130.0,
+        "wheeling": 720.0,
+        "adders": 0.0,
+        "fac": 105.0,
+        "tax_on_sale": 60.0,
+        "electricity_duty": 378.4
+      },
+      "total": 2803.4
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 301,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 1139.24,
+        "wheeling": 722.4,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 319.4624
+      },
+      "total": 2316.1023999999998
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 301,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 1139.24,
+        "wheeling": 722.4,
+        "adders": 0.0,
+        "fac": 105.35,
+        "tax_on_sale": 60.2,
+        "electricity_duty": 380.31839999999994
+      },
+      "total": 2817.5083999999997
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 480,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 2793.2,
+        "wheeling": 1152.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 652.832
+      },
+      "total": 4733.032
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 480,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 2793.2,
+        "wheeling": 1152.0,
+        "adders": 0.0,
+        "fac": 168.0,
+        "tax_on_sale": 96.0,
+        "electricity_duty": 723.712
+      },
+      "total": 5342.912
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 650,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 160.0,
+        "energy": 4514.0,
+        "wheeling": 1560.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 997.44
+      },
+      "total": 7231.4400000000005
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 650,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 4514.0,
+        "wheeling": 1560.0,
+        "adders": 0.0,
+        "fac": 227.49999999999997,
+        "tax_on_sale": 130.0,
+        "electricity_duty": 1073.84
+      },
+      "total": 7915.34
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 1300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 160.0,
+        "energy": 11170.0,
+        "wheeling": 3120.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 2312.0
+      },
+      "total": 16762.0
+    }
+  },
+  {
+    "tariff": "tata-power-mumbai",
+    "units": 1300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 11170.0,
+        "wheeling": 3120.0,
+        "adders": 0.0,
+        "fac": 454.99999999999994,
+        "tax_on_sale": 260.0,
+        "electricity_duty": 2424.8
+      },
+      "total": 17839.8
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 0,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 90.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 14.4
+      },
+      "total": 104.4
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 0,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 65.6
+      },
+      "total": 475.6
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 45,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 90.0,
+        "energy": 119.25,
+        "wheeling": 102.6,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 49.896
+      },
+      "total": 361.746
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 45,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 119.25,
+        "wheeling": 102.6,
+        "adders": 0.0,
+        "fac": 15.749999999999998,
+        "tax_on_sale": 9.0,
+        "electricity_duty": 103.616
+      },
+      "total": 760.216
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 100,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 90.0,
+        "energy": 265.0,
+        "wheeling": 227.99999999999997,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 93.28
+      },
+      "total": 676.28
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 100,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 265.0,
+        "wheeling": 227.99999999999997,
+        "adders": 0.0,
+        "fac": 35.0,
+        "tax_on_sale": 20.0,
+        "electricity_duty": 150.08
+      },
+      "total": 1108.08
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 101,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 270.85,
+        "wheeling": 230.27999999999997,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 101.7808
+      },
+      "total": 737.9108
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 101,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 270.85,
+        "wheeling": 230.27999999999997,
+        "adders": 0.0,
+        "fac": 35.349999999999994,
+        "tax_on_sale": 20.200000000000003,
+        "electricity_duty": 151.4368
+      },
+      "total": 1118.1168
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 250,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 1142.5,
+        "wheeling": 570.0,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 295.6
+      },
+      "total": 2143.1
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 250,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 1142.5,
+        "wheeling": 570.0,
+        "adders": 0.0,
+        "fac": 87.5,
+        "tax_on_sale": 50.0,
+        "electricity_duty": 353.6
+      },
+      "total": 2613.6
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 1435.0,
+        "wheeling": 683.9999999999999,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 360.64
+      },
+      "total": 2614.64
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 1435.0,
+        "wheeling": 683.9999999999999,
+        "adders": 0.0,
+        "fac": 105.0,
+        "tax_on_sale": 60.0,
+        "electricity_duty": 421.44
+      },
+      "total": 3115.44
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 301,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 1442.1,
+        "wheeling": 686.28,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 362.1408
+      },
+      "total": 2625.5208
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 301,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 1442.1,
+        "wheeling": 686.28,
+        "adders": 0.0,
+        "fac": 105.35,
+        "tax_on_sale": 60.2,
+        "electricity_duty": 422.9968
+      },
+      "total": 3126.9267999999997
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 480,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 135.0,
+        "energy": 2713.0,
+        "wheeling": 1094.3999999999999,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 630.784
+      },
+      "total": 4573.184
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 480,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 2713.0,
+        "wheeling": 1094.3999999999999,
+        "adders": 0.0,
+        "fac": 168.0,
+        "tax_on_sale": 96.0,
+        "electricity_duty": 701.664
+      },
+      "total": 5183.064
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 650,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 160.0,
+        "energy": 4107.5,
+        "wheeling": 1481.9999999999998,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 919.92
+      },
+      "total": 6669.42
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 650,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 4107.5,
+        "wheeling": 1481.9999999999998,
+        "adders": 0.0,
+        "fac": 227.49999999999997,
+        "tax_on_sale": 130.0,
+        "electricity_duty": 996.32
+      },
+      "total": 7353.32
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 1300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 160.0,
+        "energy": 9535.0,
+        "wheeling": 2963.9999999999995,
+        "adders": 0.0,
+        "fac": 0.0,
+        "tax_on_sale": 0.0,
+        "electricity_duty": 2025.44
+      },
+      "total": 14684.439999999999
+    }
+  },
+  {
+    "tariff": "adani-mumbai",
+    "units": 1300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 410.0,
+        "energy": 9535.0,
+        "wheeling": 2963.9999999999995,
+        "adders": 0.0,
+        "fac": 454.99999999999994,
+        "tax_on_sale": 260.0,
+        "electricity_duty": 2138.24
+      },
+      "total": 15762.24
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 0,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fppca": 0.0,
+        "electricity_tax": 27.0
+      },
+      "total": 327.0
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 0,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "fppca": 0.0,
+        "electricity_tax": 162.0
+      },
+      "total": 1962.0
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 45,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 261.0,
+        "wheeling": 0.0,
+        "adders": 15.749999999999998,
+        "fppca": 0.0,
+        "electricity_tax": 50.49
+      },
+      "total": 627.24
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 45,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 261.0,
+        "wheeling": 0.0,
+        "adders": 15.749999999999998,
+        "fppca": 0.0,
+        "electricity_tax": 185.49
+      },
+      "total": 2262.24
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 100,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 580.0,
+        "wheeling": 0.0,
+        "adders": 35.0,
+        "fppca": 0.0,
+        "electricity_tax": 79.2
+      },
+      "total": 994.2
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 100,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 580.0,
+        "wheeling": 0.0,
+        "adders": 35.0,
+        "fppca": 0.0,
+        "electricity_tax": 214.2
+      },
+      "total": 2629.2
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 101,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 585.8,
+        "wheeling": 0.0,
+        "adders": 35.349999999999994,
+        "fppca": 0.0,
+        "electricity_tax": 79.722
+      },
+      "total": 1000.872
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 101,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 585.8,
+        "wheeling": 0.0,
+        "adders": 35.349999999999994,
+        "fppca": 0.0,
+        "electricity_tax": 214.722
+      },
+      "total": 2635.872
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 250,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 1450.0,
+        "wheeling": 0.0,
+        "adders": 87.5,
+        "fppca": 0.0,
+        "electricity_tax": 157.5
+      },
+      "total": 1995.0
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 250,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 1450.0,
+        "wheeling": 0.0,
+        "adders": 87.5,
+        "fppca": 0.0,
+        "electricity_tax": 292.5
+      },
+      "total": 3630.0
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 1740.0,
+        "wheeling": 0.0,
+        "adders": 105.0,
+        "fppca": 0.0,
+        "electricity_tax": 183.6
+      },
+      "total": 2328.6
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 1740.0,
+        "wheeling": 0.0,
+        "adders": 105.0,
+        "fppca": 0.0,
+        "electricity_tax": 318.6
+      },
+      "total": 3963.6
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 301,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 1745.8,
+        "wheeling": 0.0,
+        "adders": 105.35,
+        "fppca": 0.0,
+        "electricity_tax": 184.122
+      },
+      "total": 2335.272
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 301,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 1745.8,
+        "wheeling": 0.0,
+        "adders": 105.35,
+        "fppca": 0.0,
+        "electricity_tax": 319.122
+      },
+      "total": 3970.272
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 480,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 2784.0,
+        "wheeling": 0.0,
+        "adders": 168.0,
+        "fppca": 0.0,
+        "electricity_tax": 277.56
+      },
+      "total": 3529.56
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 480,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 2784.0,
+        "wheeling": 0.0,
+        "adders": 168.0,
+        "fppca": 0.0,
+        "electricity_tax": 412.56
+      },
+      "total": 5164.56
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 650,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 3770.0,
+        "wheeling": 0.0,
+        "adders": 227.49999999999997,
+        "fppca": 0.0,
+        "electricity_tax": 366.3
+      },
+      "total": 4663.8
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 650,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 3770.0,
+        "wheeling": 0.0,
+        "adders": 227.49999999999997,
+        "fppca": 0.0,
+        "electricity_tax": 501.3
+      },
+      "total": 6298.8
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 1300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 300.0,
+        "energy": 7540.0,
+        "wheeling": 0.0,
+        "adders": 454.99999999999994,
+        "fppca": 0.0,
+        "electricity_tax": 705.6
+      },
+      "total": 9000.6
+    }
+  },
+  {
+    "tariff": "bescom",
+    "units": 1300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1800.0,
+        "energy": 7540.0,
+        "wheeling": 0.0,
+        "adders": 454.99999999999994,
+        "fppca": 0.0,
+        "electricity_tax": 840.6
+      },
+      "total": 10635.6
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 0,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 3.2,
+        "pension_surcharge": 2.8
+      },
+      "total": 46.0
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 0,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 0.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 216.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 96.0,
+        "pension_surcharge": 84.0
+      },
+      "total": 1596.0
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 45,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 135.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 14.0,
+        "pension_surcharge": 12.25
+      },
+      "total": 201.25
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 45,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 135.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 240.3,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 106.8,
+        "pension_surcharge": 93.45
+      },
+      "total": 1775.55
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 100,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 300.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 27.2,
+        "pension_surcharge": 23.8
+      },
+      "total": 391.0
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 100,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 300.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 270.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 120.0,
+        "pension_surcharge": 105.0
+      },
+      "total": 1995.0
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 101,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 303.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 27.44,
+        "pension_surcharge": 24.01
+      },
+      "total": 394.45
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 101,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 303.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 270.54,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 120.24,
+        "pension_surcharge": 105.21
+      },
+      "total": 1998.99
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 250,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 825.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 69.2,
+        "pension_surcharge": 60.55
+      },
+      "total": 994.75
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 250,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 825.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 364.5,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 162.0,
+        "pension_surcharge": 141.75
+      },
+      "total": 2693.25
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 1050.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 87.2,
+        "pension_surcharge": 76.3
+      },
+      "total": 1253.5
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 1050.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 405.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 180.0,
+        "pension_surcharge": 157.5
+      },
+      "total": 2992.5
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 301,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 1054.5,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 87.56,
+        "pension_surcharge": 76.615
+      },
+      "total": 1258.675
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 301,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 1054.5,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 405.81,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 180.36,
+        "pension_surcharge": 157.815
+      },
+      "total": 2998.485
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 480,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 2020.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 164.8,
+        "pension_surcharge": 144.2
+      },
+      "total": 2369.0
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 480,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 2020.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 579.6,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 257.6,
+        "pension_surcharge": 225.4
+      },
+      "total": 4282.6
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 650,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 3125.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 253.2,
+        "pension_surcharge": 221.55
+      },
+      "total": 3639.75
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 650,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 3125.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 778.5,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 346.0,
+        "pension_surcharge": 302.75
+      },
+      "total": 5752.25
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 1300,
+    "ctx": {
+      "supply": "single",
+      "load_kw": 2,
+      "inputs": {}
+    },
+    "expected": {
+      "charges": {
+        "fixed": 40.0,
+        "energy": 7700.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 0.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 619.2,
+        "pension_surcharge": 541.8
+      },
+      "total": 8901.0
+    }
+  },
+  {
+    "tariff": "bses-rajdhani",
+    "units": 1300,
+    "ctx": {
+      "supply": "three",
+      "load_kw": 12,
+      "inputs": {
+        "fac": 0.35,
+        "ppac": 18,
+        "tax_on_sale": 0.2
+      }
+    },
+    "expected": {
+      "charges": {
+        "fixed": 1200.0,
+        "energy": 7700.0,
+        "wheeling": 0.0,
+        "adders": 0.0,
+        "ppac": 1602.0,
+        "electricity_tax": 0.0,
+        "deficit_surcharge": 712.0,
+        "pension_surcharge": 623.0
+      },
+      "total": 11837.0
+    }
+  }
+]
