@@ -1,0 +1,123 @@
+{
+  "id": "bses-rajdhani",
+  "discom": "BSES Rajdhani",
+  "name": "BSES Rajdhani Power Ltd. (BRPL)",
+  "state": "DL",
+  "category": "Domestic, individual connection",
+  "fy": "2021-22 (still in force)",
+  "effective_from": "2021-10-01",
+  "effective_to": "open",
+  "source": "DERC Tariff Order for BRPL FY 2021-22 (30 Sept 2021), Tariff Schedule (page 348) and note 7: 8% towards the accumulated deficit and 7% towards the Pension Trust, on fixed and energy charges. DERC has not issued a newer retail tariff schedule; its 31 Dec 2025 order is a true-up only.",
+  "source_url": "https://www.derc.gov.in/sites/default/files/BRPL%20%20FY%202021-22.pdf",
+  "billing_cycle_days": 30,
+  "slab_mode": "telescopic",
+  "slabs": [
+    {
+      "upto_units": 200,
+      "energy_inr_per_kwh": 3.0
+    },
+    {
+      "upto_units": 400,
+      "energy_inr_per_kwh": 4.5
+    },
+    {
+      "upto_units": 800,
+      "energy_inr_per_kwh": 6.5
+    },
+    {
+      "upto_units": 1200,
+      "energy_inr_per_kwh": 7.0
+    },
+    {
+      "upto_units": null,
+      "energy_inr_per_kwh": 8.0
+    }
+  ],
+  "wheeling_inr_per_kwh": 0,
+  "fixed_charge": {
+    "mode": "per_kw_by_load_band",
+    "min_kw": 1,
+    "bands": [
+      {
+        "upto_kw": 2,
+        "inr_per_kw": 20
+      },
+      {
+        "upto_kw": 5,
+        "inr_per_kw": 50
+      },
+      {
+        "upto_kw": 15,
+        "inr_per_kw": 100
+      },
+      {
+        "upto_kw": 25,
+        "inr_per_kw": 200
+      },
+      {
+        "upto_kw": null,
+        "inr_per_kw": 250
+      }
+    ]
+  },
+  "bill_inputs": [
+    {
+      "id": "ppac",
+      "label": "Power purchase adjustment charge (PPAC)",
+      "kind": "pct",
+      "base": [
+        "fixed",
+        "energy"
+      ],
+      "default": 0,
+      "note": "Set by DERC for each DISCOM and changes often. We use the PPAC % printed on your bill, and 0% if it isn't shown."
+    },
+    {
+      "id": "electricity_tax",
+      "label": "Electricity tax (municipal)",
+      "kind": "pct",
+      "base": [
+        "fixed",
+        "energy"
+      ],
+      "default": 0,
+      "note": "Levied by the municipal body. We use the rate printed on your bill, and 0% if it isn't shown."
+    }
+  ],
+  "percent_charges": [
+    {
+      "id": "deficit_surcharge",
+      "label": "Surcharge towards accumulated deficit",
+      "pct": 8,
+      "base": [
+        "fixed",
+        "energy"
+      ],
+      "source_url": "https://www.derc.gov.in/sites/default/files/BRPL%20%20FY%202021-22.pdf"
+    },
+    {
+      "id": "pension_surcharge",
+      "label": "Pension Trust surcharge",
+      "pct": 7,
+      "base": [
+        "fixed",
+        "energy"
+      ],
+      "source_url": "https://www.derc.gov.in/sites/default/files/BRPL%20%20FY%202021-22.pdf"
+    }
+  ],
+  "notes": [
+    "If you get the Delhi government's electricity subsidy, your savings will be lower than shown, because the subsidy already covers part of your bill."
+  ],
+  "net_metering": {
+    "allowed": true,
+    "max_kw_rule": "sanctioned_load",
+    "surplus": "banked_annual_settlement",
+    "note": "Extra units are banked for later months. Units left at year end are counted as ₹0."
+  },
+  "common_area": {
+    "note": "Separately metered staircase lighting, compound lighting, lifts and water pumps in residential complexes are billed on the Domestic tariff.",
+    "source": "DERC Tariff Order for BRPL FY 2021-22 (30 Sept 2021), Other Terms and Conditions, 1.1 Domestic, items (c) and (d) (page 353).",
+    "source_url": "https://www.derc.gov.in/sites/default/files/BRPL%20%20FY%202021-22.pdf"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "msedcl",
+  "discom": "MSEDCL",
+  "name": "Maharashtra State Electricity Distribution Co. Ltd. (Mahavitaran)",
+  "state": "MH",
+  "category": "LT-I(B) Residential",
+  "fy": "2026-27",
+  "effective_from": "2026-04-01",
+  "effective_to": "2027-03-31",
+  "source": "MERC Order, Case No. 75 of 2025, Summary of LT Tariff for FY 2026-27 (page 53). Electricity duty: MSEDCL Billing FAQs, '16% of (A+B+C+D)'.",
+  "source_url": "https://www.mahadiscom.in/consumer/wp-content/uploads/2025/06/Order_Case-No.75-of-2025.pdf",
+  "billing_cycle_days": 30,
+  "slab_mode": "telescopic",
+  "slabs": [
+    {
+      "upto_units": 100,
+      "energy_inr_per_kwh": 3.96
+    },
+    {
+      "upto_units": 300,
+      "energy_inr_per_kwh": 10.8
+    },
+    {
+      "upto_units": 500,
+      "energy_inr_per_kwh": 15.03
+    },
+    {
+      "upto_units": null,
+      "energy_inr_per_kwh": 17.53
+    }
+  ],
+  "wheeling_inr_per_kwh": 1.6,
+  "fixed_charge": {
+    "mode": "per_connection",
+    "single_phase_inr": 130,
+    "three_phase_inr": 435
+  },
+  "bill_inputs": [
+    {
+      "id": "fac",
+      "label": "Fuel adjustment charge (FAC)",
+      "kind": "per_kwh",
+      "default": 0,
+      "note": "Changes every month. We use the FAC printed on your bill, and ₹0 if it isn't shown."
+    }
+  ],
+  "percent_charges": [
+    {
+      "id": "electricity_duty",
+      "label": "Electricity duty",
+      "pct": 16,
+      "base": [
+        "fixed",
+        "energy",
+        "wheeling",
+        "fac"
+      ],
+      "source_url": "https://www.mahadiscom.in/en/billing-faqs/"
+    }
+  ],
+  "notes": [],
+  "net_metering": {
+    "allowed": true,
+    "max_kw_rule": "sanctioned_load",
+    "surplus": "banked_annual_settlement",
+    "note": "Under MERC net metering, extra units are banked for later months. Units left at year end are bought at a low rate, so we count them as ₹0. Residential consumers are exempt from time-of-day banking (MERC Case 75 of 2025, para 35.16)."
+  },
+  "common_area": {
+    "note": "Housing societies' separately metered common facilities (water pumping, common-area lighting, lifts, parking, fire-fighting pumps) are billed on LT-I(B) Residential, clause (c).",
+    "source": "MERC MYT Order for MSEDCL, Case No. 217 of 2024 (28 March 2025), Tariff Schedule, LT I(B) applicability (c) (page 725); para 7.30.13 (page 615): common loads of housing societies are billed at LT I(B) even when supplied at HT.",
+    "source_url": "https://merc.gov.in/wp-content/uploads/2025/03/MSEDCL-MYT-Order_Case_no_217-of-2024.pdf"
+  }
+}

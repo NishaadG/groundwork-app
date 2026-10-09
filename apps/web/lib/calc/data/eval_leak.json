@@ -1,0 +1,74 @@
+{
+  "run_on": "2026-10-01",
+  "data": "Synthetic 15-minute household meter stream (scripts/synthetic_water.py) with a 1-litre meter resolution; 5 runs \u00d7 ~200 nights, 20 injected leaks of 1\u201330 litres an hour each; night-time noise: single and double toilet flushes and taps or showers left on for 30\u201345 minutes. Not real household data: real performance is measured in the pilot.",
+  "targets": {
+    "precision": 0.9,
+    "recall": 0.85
+  },
+  "precision": 0.974,
+  "recall": 1.0,
+  "worst_precision": 0.947,
+  "worst_recall": 1.0,
+  "runs": [
+    {
+      "seed": 1,
+      "typical_daily_litres": 724.0,
+      "nights": 200,
+      "true_positive": 72,
+      "false_positive": 4,
+      "false_negative": 0,
+      "true_negative": 124,
+      "precision": 0.947,
+      "recall": 1.0,
+      "misses": []
+    },
+    {
+      "seed": 2,
+      "typical_daily_litres": 730.0,
+      "nights": 200,
+      "true_positive": 77,
+      "false_positive": 2,
+      "false_negative": 0,
+      "true_negative": 121,
+      "precision": 0.975,
+      "recall": 1.0,
+      "misses": []
+    },
+    {
+      "seed": 3,
+      "typical_daily_litres": 722.0,
+      "nights": 200,
+      "true_positive": 74,
+      "false_positive": 2,
+      "false_negative": 0,
+      "true_negative": 124,
+      "precision": 0.974,
+      "recall": 1.0,
+      "misses": []
+    },
+    {
+      "seed": 4,
+      "typical_daily_litres": 726.0,
+      "nights": 200,
+      "true_positive": 71,
+      "false_positive": 1,
+      "false_negative": 0,
+      "true_negative": 128,
+      "precision": 0.986,
+      "recall": 1.0,
+      "misses": []
+    },
+    {
+      "seed": 5,
+      "typical_daily_litres": 726.0,
+      "nights": 200,
+      "true_positive": 73,
+      "false_positive": 1,
+      "false_negative": 0,
+      "true_negative": 126,
+      "precision": 0.986,
+      "recall": 1.0,
+      "misses": []
+    }
+  ]
+}

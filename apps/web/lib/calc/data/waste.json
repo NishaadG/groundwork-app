@@ -1,0 +1,357 @@
+{
+  "rates_as_of": "2026-10-01",
+  "rates_source": "Indicative Pune buying prices from two collectors' published rate lists (The Kabadiwala, Pune Recyclers), read on 1 Oct 2026. Range = lowest to highest of the two. Real offers vary with quantity and condition.",
+  "co2_source": "US EPA WARM v16 (Dec 2023), Exhibit 1-1 net emission factors; avoided = net landfilling − net recycling (or composting), converted from MTCO2E per short ton. International factor: Indian landfill and recycling conditions differ.",
+  "co2_source_url": "https://www.epa.gov/system/files/documents/2024-01/warm_management_practices_v16_dec.pdf",
+  "streams_source_url": "https://ddnews.gov.in/en/new-waste-rules-from-april-1-four-way-segregation-mandatory-strict-penalties-for-violations/",
+  "size_presets_kg": {
+    "handful": 0.2,
+    "bag": 1.5,
+    "sack": 6.0
+  },
+  "size_presets_note": "Groundwork assumption for quick estimates; you can type the actual weight instead.",
+  "materials": [
+    {
+      "id": "pet",
+      "label": "PET bottles",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 20,
+        "max": 20
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 1.168,
+        "warm_material": "PET",
+        "basis": "recycling vs landfilling"
+      },
+      "note": "Rinsed, caps off."
+    },
+    {
+      "id": "hdpe",
+      "label": "Hard plastic (HDPE, PP)",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 2,
+        "max": 3
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 0.86,
+        "warm_material": "HDPE",
+        "basis": "recycling vs landfilling"
+      },
+      "note": "Buckets, detergent bottles, tubs."
+    },
+    {
+      "id": "ldpe_film",
+      "label": "Plastic bags and film",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 0,
+        "max": 15
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune"
+      ],
+      "co2": null,
+      "note": "Clean, sorted film sells; milk pouches and mixed film often fetch nothing."
+    },
+    {
+      "id": "mixed_plastic",
+      "label": "Mixed plastic",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 8,
+        "max": 10
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 1.047,
+        "warm_material": "Mixed Plastics",
+        "basis": "recycling vs landfilling"
+      },
+      "note": ""
+    },
+    {
+      "id": "multilayer",
+      "label": "Multilayer packets (chips, biscuit wrappers)",
+      "stream": "dry",
+      "recyclable": false,
+      "rate_inr_per_kg": {
+        "min": 0,
+        "max": 0
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune"
+      ],
+      "co2": null,
+      "note": "Not recyclable with ordinary plastic; hand over as dry waste."
+    },
+    {
+      "id": "cardboard",
+      "label": "Cardboard and cartons",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 4,
+        "max": 8
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 3.66,
+        "warm_material": "Corrugated Containers",
+        "basis": "recycling vs landfilling"
+      },
+      "note": "Keep dry; greasy pizza boxes go in wet waste."
+    },
+    {
+      "id": "newspaper",
+      "label": "Newspaper",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 11,
+        "max": 12
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 2.05,
+        "warm_material": "Newspaper",
+        "basis": "recycling vs landfilling"
+      },
+      "note": ""
+    },
+    {
+      "id": "mixed_paper",
+      "label": "Books, notebooks and other paper",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 5,
+        "max": 10
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 3.935,
+        "warm_material": "Mixed Paper (primarily residential)",
+        "basis": "recycling vs landfilling"
+      },
+      "note": ""
+    },
+    {
+      "id": "glass",
+      "label": "Glass bottles and jars",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": null,
+      "rate_sources": [],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 0.331,
+        "warm_material": "Glass",
+        "basis": "recycling vs landfilling"
+      },
+      "note": "Neither collector we checked buys glass; give it to the municipal dry-waste collection."
+    },
+    {
+      "id": "ferrous",
+      "label": "Iron and tin",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 16,
+        "max": 23
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 2.039,
+        "warm_material": "Steel Cans",
+        "basis": "recycling vs landfilling"
+      },
+      "note": ""
+    },
+    {
+      "id": "steel",
+      "label": "Stainless steel",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 30,
+        "max": 40
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 2.039,
+        "warm_material": "Steel Cans",
+        "basis": "recycling vs landfilling"
+      },
+      "note": ""
+    },
+    {
+      "id": "aluminium",
+      "label": "Aluminium (cans and utensils)",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 50,
+        "max": 150
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 10.086,
+        "warm_material": "Aluminum Cans",
+        "basis": "recycling vs landfilling"
+      },
+      "note": "Cans fetch less than utensils."
+    },
+    {
+      "id": "copper",
+      "label": "Copper",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 500,
+        "max": 600
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 4.971,
+        "warm_material": "Copper Wire",
+        "basis": "recycling vs landfilling"
+      },
+      "note": ""
+    },
+    {
+      "id": "brass",
+      "label": "Brass",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 400,
+        "max": 450
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 4.861,
+        "warm_material": "Mixed Metals",
+        "basis": "recycling vs landfilling"
+      },
+      "note": ""
+    },
+    {
+      "id": "ewaste",
+      "label": "Small electronics and cables",
+      "stream": "e_waste",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 10,
+        "max": 15
+      },
+      "rate_sources": [
+        "https://www.thekabadiwala.com/scrap-rates/Pune",
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 1.014,
+        "warm_material": "Mixed Electronics",
+        "basis": "recycling vs landfilling"
+      },
+      "note": "Give e-waste only to authorised collectors (E-Waste Rules)."
+    },
+    {
+      "id": "textile",
+      "label": "Old clothes",
+      "stream": "dry",
+      "recyclable": true,
+      "rate_inr_per_kg": {
+        "min": 6,
+        "max": 6
+      },
+      "rate_sources": [
+        "https://punerecyclers.com/rate-list/"
+      ],
+      "co2": null,
+      "note": ""
+    },
+    {
+      "id": "wet",
+      "label": "Food and garden waste",
+      "stream": "wet",
+      "recyclable": false,
+      "rate_inr_per_kg": null,
+      "rate_sources": [],
+      "co2": {
+        "kg_co2e_avoided_per_kg": 0.717,
+        "warm_material": "Food Waste",
+        "basis": "composting vs landfilling"
+      },
+      "note": "Compost it, or hand it over separately as wet waste."
+    },
+    {
+      "id": "sanitary",
+      "label": "Diapers and sanitary pads",
+      "stream": "sanitary",
+      "recyclable": false,
+      "rate_inr_per_kg": null,
+      "rate_sources": [],
+      "co2": null,
+      "note": "Wrap securely and hand over separately as sanitary waste."
+    },
+    {
+      "id": "special_care",
+      "label": "Medicines, paint, bulbs, batteries",
+      "stream": "special_care",
+      "recyclable": false,
+      "rate_inr_per_kg": null,
+      "rate_sources": [],
+      "co2": null,
+      "note": "Keep apart; hand over on special-care collection days."
+    },
+    {
+      "id": "other",
+      "label": "Other",
+      "stream": "dry",
+      "recyclable": false,
+      "rate_inr_per_kg": null,
+      "rate_sources": [],
+      "co2": null,
+      "note": ""
+    }
+  ]
+}

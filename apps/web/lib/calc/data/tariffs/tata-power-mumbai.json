@@ -1,0 +1,98 @@
+{
+  "id": "tata-power-mumbai",
+  "discom": "Tata Power (Mumbai)",
+  "name": "The Tata Power Company Ltd., Distribution Business (TPC-D)",
+  "state": "MH",
+  "category": "LT-I(B) Residential",
+  "fy": "2026-27",
+  "effective_from": "2026-04-01",
+  "effective_to": "2027-03-31",
+  "source": "MERC MYT Order for TPC-D, Case No. 210 of 2024 (28 March 2025), Annexure 6 Tariff Schedule, LT I(B) for 1 April 2026 to 31 March 2027 (page 300).",
+  "source_url": "https://www.tatapower.com/regulatory/licence-area-mumbai/regulatory-filings/distribution-business-schedule-of-electricity-tariff/Final-MYT-Order-TPC-D-Case-No.-210-of-2024.pdf",
+  "billing_cycle_days": 30,
+  "slab_mode": "telescopic",
+  "slabs": [
+    {
+      "upto_units": 100,
+      "energy_inr_per_kwh": 1.9
+    },
+    {
+      "upto_units": 300,
+      "energy_inr_per_kwh": 4.7
+    },
+    {
+      "upto_units": 500,
+      "energy_inr_per_kwh": 9.24
+    },
+    {
+      "upto_units": null,
+      "energy_inr_per_kwh": 10.24
+    }
+  ],
+  "wheeling_inr_per_kwh": 2.4,
+  "fixed_charge": {
+    "mode": "by_units",
+    "three_phase_inr": 160,
+    "tiers": [
+      {
+        "upto_units": 100,
+        "inr": 90
+      },
+      {
+        "upto_units": 500,
+        "inr": 135
+      },
+      {
+        "upto_units": null,
+        "inr": 160
+      }
+    ],
+    "extra_above_kw": {
+      "above_kw": 10,
+      "block_kw": 10,
+      "inr_per_block": 250
+    }
+  },
+  "bill_inputs": [
+    {
+      "id": "fac",
+      "label": "Fuel adjustment charge (FAC)",
+      "kind": "per_kwh",
+      "default": 0,
+      "note": "Changes every month. We use the FAC printed on your bill, and ₹0 if it isn't shown."
+    },
+    {
+      "id": "tax_on_sale",
+      "label": "Tax on sale of electricity",
+      "kind": "per_kwh",
+      "default": 0,
+      "note": "A Government of Maharashtra levy per unit. We use the rate printed on your bill, and ₹0 if it isn't shown."
+    }
+  ],
+  "percent_charges": [
+    {
+      "id": "electricity_duty",
+      "label": "Electricity duty",
+      "pct": 16,
+      "base": [
+        "fixed",
+        "energy",
+        "wheeling",
+        "fac"
+      ],
+      "source_url": "https://www.mahadiscom.in/en/billing-faqs/"
+    }
+  ],
+  "notes": [],
+  "net_metering": {
+    "allowed": true,
+    "max_kw_rule": "sanctioned_load",
+    "surplus": "banked_annual_settlement",
+    "note": "Under MERC net metering, extra units are banked for later months. Units left at year end are bought at a low rate, so we count them as ₹0."
+  },
+  "common_area": {
+    "note": "Housing societies' separately metered common facilities (water pumping, common-area lighting, lifts, parking, fire-fighting pumps) are billed on LT-I(B) Residential, clause (c).",
+    "source": "MERC MYT Order for TPC-D, Case No. 210 of 2024 (28 March 2025), Annexure 6 Tariff Schedule, LT I(B) applicability (c) (page 299).",
+    "source_url": "https://www.tatapower.com/regulatory/licence-area-mumbai/regulatory-filings/distribution-business-schedule-of-electricity-tariff/Final-MYT-Order-TPC-D-Case-No.-210-of-2024.pdf"
+  }
+}

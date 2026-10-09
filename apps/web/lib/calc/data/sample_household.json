@@ -1,0 +1,452 @@
+{
+  "inputs": {
+    "city": "Pune",
+    "lat": 18.52,
+    "lng": 73.86,
+    "irradiance_kwh_m2_day": [
+      4.9891,
+      5.8502,
+      6.6137,
+      7.0778,
+      7.0174,
+      4.5682,
+      3.3101,
+      3.3838,
+      4.3092,
+      5.0119,
+      4.896,
+      4.6649
+    ],
+    "monthly_units": [
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0
+    ],
+    "roof_area_sqft": 350,
+    "shading": "none",
+    "sanctioned_load_kw": 3,
+    "tariff": "msedcl"
+  },
+  "report": {
+    "feasible": true,
+    "size_kw": 2.0,
+    "recommended_kw": 2.0,
+    "candidates": {
+      "by_need_kw": 2.33,
+      "by_roof_kw": 3.25,
+      "by_load_kw": 3.0,
+      "limited_by": "need"
+    },
+    "specific_yield_kwh_per_kw": [
+      119.09,
+      126.13,
+      157.87,
+      163.5,
+      167.51,
+      105.53,
+      79.01,
+      80.77,
+      99.54,
+      119.63,
+      113.1,
+      111.35
+    ],
+    "generation_kwh": [
+      238.2,
+      252.3,
+      315.7,
+      327.0,
+      335.0,
+      211.1,
+      158.0,
+      161.5,
+      199.1,
+      239.3,
+      226.2,
+      222.7
+    ],
+    "annual_generation_kwh": 2886.1,
+    "consumption_kwh": [
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0,
+      280.0
+    ],
+    "annual_consumption_kwh": 3360.0,
+    "cost_inr": 160000.0,
+    "subsidy_inr": 60000.0,
+    "net_cost_inr": 100000.0,
+    "bill_before_inr": [
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88,
+      3384.88
+    ],
+    "bill_after_inr": [
+      420.52,
+      329.71,
+      150.8,
+      150.8,
+      150.8,
+      150.8,
+      493.8,
+      1061.25,
+      672.67,
+      413.5,
+      497.82,
+      520.35
+    ],
+    "savings_year1_inr": 35606.0,
+    "payback_years": 2.75,
+    "savings_25y_net_inr": 1097796.0,
+    "co2_avoided_t_per_year": 2.049,
+    "years": [
+      {
+        "year": 1,
+        "savings_inr": 35605.73,
+        "cumulative_inr": 35605.73
+      },
+      {
+        "year": 2,
+        "savings_inr": 36453.86,
+        "cumulative_inr": 72059.6
+      },
+      {
+        "year": 3,
+        "savings_inr": 37322.19,
+        "cumulative_inr": 109381.79
+      },
+      {
+        "year": 4,
+        "savings_inr": 38211.21,
+        "cumulative_inr": 147593.0
+      },
+      {
+        "year": 5,
+        "savings_inr": 39121.4,
+        "cumulative_inr": 186714.4
+      },
+      {
+        "year": 6,
+        "savings_inr": 40053.27,
+        "cumulative_inr": 226767.67
+      },
+      {
+        "year": 7,
+        "savings_inr": 41007.34,
+        "cumulative_inr": 267775.01
+      },
+      {
+        "year": 8,
+        "savings_inr": 41984.14,
+        "cumulative_inr": 309759.15
+      },
+      {
+        "year": 9,
+        "savings_inr": 42984.2,
+        "cumulative_inr": 352743.34
+      },
+      {
+        "year": 10,
+        "savings_inr": 44008.08,
+        "cumulative_inr": 396751.42
+      },
+      {
+        "year": 11,
+        "savings_inr": 45056.35,
+        "cumulative_inr": 441807.78
+      },
+      {
+        "year": 12,
+        "savings_inr": 46129.6,
+        "cumulative_inr": 487937.37
+      },
+      {
+        "year": 13,
+        "savings_inr": 47228.4,
+        "cumulative_inr": 535165.77
+      },
+      {
+        "year": 14,
+        "savings_inr": 48353.38,
+        "cumulative_inr": 583519.16
+      },
+      {
+        "year": 15,
+        "savings_inr": 49505.16,
+        "cumulative_inr": 633024.32
+      },
+      {
+        "year": 16,
+        "savings_inr": 50684.37,
+        "cumulative_inr": 683708.69
+      },
+      {
+        "year": 17,
+        "savings_inr": 51891.68,
+        "cumulative_inr": 735600.37
+      },
+      {
+        "year": 18,
+        "savings_inr": 53127.74,
+        "cumulative_inr": 788728.1
+      },
+      {
+        "year": 19,
+        "savings_inr": 54393.24,
+        "cumulative_inr": 843121.34
+      },
+      {
+        "year": 20,
+        "savings_inr": 55688.88,
+        "cumulative_inr": 898810.22
+      },
+      {
+        "year": 21,
+        "savings_inr": 57015.39,
+        "cumulative_inr": 955825.62
+      },
+      {
+        "year": 22,
+        "savings_inr": 58373.5,
+        "cumulative_inr": 1014199.12
+      },
+      {
+        "year": 23,
+        "savings_inr": 59763.96,
+        "cumulative_inr": 1073963.08
+      },
+      {
+        "year": 24,
+        "savings_inr": 61187.53,
+        "cumulative_inr": 1135150.61
+      },
+      {
+        "year": 25,
+        "savings_inr": 62645.02,
+        "cumulative_inr": 1197795.63
+      }
+    ],
+    "working": [
+      {
+        "id": "irradiance",
+        "label": "Sunlight on your roof",
+        "formula": "Monthly average solar irradiance at your location",
+        "inputs": {},
+        "result": [
+          4.99,
+          5.85,
+          6.61,
+          7.08,
+          7.02,
+          4.57,
+          3.31,
+          3.38,
+          4.31,
+          5.01,
+          4.9,
+          4.66
+        ],
+        "unit": "kWh/m²/day",
+        "source": {
+          "name": "NASA POWER climatology (ALLSKY_SFC_SW_DWN)",
+          "url": "https://power.larc.nasa.gov/docs/services/api/temporal/climatology/",
+          "as_of": null,
+          "status": null
+        }
+      },
+      {
+        "id": "specific_yield",
+        "label": "What 1 kW of panels makes here",
+        "formula": "irradiance × days in month × performance ratio × shading factor",
+        "inputs": {
+          "performance_ratio": 0.77,
+          "shading": "none",
+          "shading_factor": 1.0
+        },
+        "result": 1443.0,
+        "unit": "kWh per kW per year",
+        "source": {
+          "name": "Typical for Indian rooftop systems (heat, inverter, soiling and wiring losses). Cross-checked against PVGIS with 14% system loss.",
+          "url": "https://re.jrc.ec.europa.eu/pvg_tools/en/",
+          "as_of": "2026-10-01",
+          "status": "assumption"
+        }
+      },
+      {
+        "id": "size",
+        "label": "System size",
+        "formula": "round down to 0.5 kW of the smallest of: yearly units ÷ yield per kW, roof area ÷ area per kW, sanctioned load (min 1 kW)",
+        "inputs": {
+          "yearly_units_kwh": 3360.0,
+          "by_need_kw": 2.33,
+          "roof_area_sqft": 350.0,
+          "sqft_per_kw": 107.6,
+          "by_roof_kw": 3.25,
+          "by_load_kw": 3.0,
+          "limited_by": "need"
+        },
+        "result": 2.0,
+        "unit": "kW",
+        "source": {
+          "name": "MNRE FAQ, Grid Connected Solar Rooftop System: 'A 1 kW rooftop system generally requires 10 sq. metres of shadow-free area.'",
+          "url": "https://solarrooftop.pmsuryaghar.gov.in/pdf/faq_national_portal2024021301.pdf",
+          "as_of": "2024-02-13",
+          "status": "verified"
+        }
+      },
+      {
+        "id": "generation",
+        "label": "Electricity your panels make in a year",
+        "formula": "system size × yield per kW, month by month",
+        "inputs": {
+          "size_kw": 2.0,
+          "yield_kwh_per_kw": 1443.0
+        },
+        "result": 2886.0,
+        "unit": "kWh/year",
+        "source": null
+      },
+      {
+        "id": "cost",
+        "label": "Installed cost before subsidy",
+        "formula": "benchmark price for this size (linear between known sizes)",
+        "inputs": {
+          "size_kw": 2.0
+        },
+        "result": 160000.0,
+        "unit": "₹",
+        "source": {
+          "name": "Midpoints of Maharashtra on-grid price ranges (Bluebird Solar, 2025). The 3 kW point sits within SolarSquare's indicative Pune price of about ₹2.15 lakh (Jul 2026). Linear between points. Editable on every report, because installer quotes vary.",
+          "url": "https://bluebirdsolar.com/blogs/all/solar-rooftop-system-price-subsidy-in-maharashtra",
+          "as_of": "2026-07-11",
+          "status": "estimate"
+        }
+      },
+      {
+        "id": "subsidy",
+        "label": "PM Surya Ghar subsidy",
+        "formula": "₹30,000/kW for the first 2 kW + ₹18,000/kW for the 3rd kW, capped at ₹78,000",
+        "inputs": {
+          "size_kw": 2.0
+        },
+        "result": 60000.0,
+        "unit": "₹",
+        "source": {
+          "name": "Cabinet approves PM-Surya Ghar: Muft Bijli Yojana (PIB, 29 Feb 2024): CFA of 60% of system cost up to 2 kW and 40% of additional cost from 2 to 3 kW, capped at 3 kW. ₹30,000 for 1 kW, ₹60,000 for 2 kW, ₹78,000 for 3 kW or more.",
+          "url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2010133",
+          "as_of": "2026-10-01",
+          "status": "verified"
+        }
+      },
+      {
+        "id": "net_cost",
+        "label": "What you pay",
+        "formula": "installed cost − subsidy",
+        "inputs": {
+          "cost_inr": 160000.0,
+          "subsidy_inr": 60000.0
+        },
+        "result": 100000.0,
+        "unit": "₹",
+        "source": null
+      },
+      {
+        "id": "savings_year1",
+        "label": "Savings in the first year",
+        "formula": "Σ months (bill without solar − bill with solar). Solar cuts your top slabs first; extra units are banked for later months",
+        "inputs": {
+          "bills_without_solar_inr": 40619.0,
+          "bills_with_solar_inr": 5013.0,
+          "tariff": "MSEDCL LT-I(B) Residential (2026-27)"
+        },
+        "result": 35606.0,
+        "unit": "₹",
+        "source": {
+          "name": "MERC Order, Case No. 75 of 2025, Summary of LT Tariff for FY 2026-27 (page 53). Electricity duty: MSEDCL Billing FAQs, '16% of (A+B+C+D)'.",
+          "url": "https://www.mahadiscom.in/consumer/wp-content/uploads/2025/06/Order_Case-No.75-of-2025.pdf",
+          "as_of": "2026-04-01",
+          "status": "verified"
+        }
+      },
+      {
+        "id": "payback",
+        "label": "Payback",
+        "formula": "year n savings = year-1 savings × (1 + price rise)^(n−1) × (1 − panel loss)^(n−1); payback is when the running total covers what you pay",
+        "inputs": {
+          "savings_year1_inr": 35606.0,
+          "price_rise_per_year": 0.03,
+          "panel_loss_per_year": 0.006,
+          "net_cost_inr": 100000.0
+        },
+        "result": 2.7,
+        "unit": "years",
+        "source": {
+          "name": "Typical crystalline-silicon module warranty curves (about 0.5–0.7% a year).",
+          "url": null,
+          "as_of": "2026-10-01",
+          "status": "assumption"
+        }
+      },
+      {
+        "id": "savings_25y",
+        "label": "Savings over 25 years, after paying for the system",
+        "formula": "Σ savings for years 1–25 − what you pay",
+        "inputs": {
+          "total_savings_inr": 1197796.0,
+          "net_cost_inr": 100000.0
+        },
+        "result": 1097796.0,
+        "unit": "₹",
+        "source": {
+          "name": "Standard 25-year module performance warranty period.",
+          "url": null,
+          "as_of": "2026-10-01",
+          "status": "assumption"
+        }
+      },
+      {
+        "id": "co2",
+        "label": "CO₂ avoided each year",
+        "formula": "yearly generation × grid emission factor",
+        "inputs": {
+          "generation_kwh": 2886.0,
+          "kg_co2_per_kwh": 0.71
+        },
+        "result": 2.05,
+        "unit": "t CO₂/year",
+        "source": {
+          "name": "CEA CO₂ Baseline Database for the Indian Power Sector, User Guide v21.0 (Dec 2025): FY 2024-25 weighted average 0.71 tCO₂/MWh (1,234.19 Mt CO₂ / 1,739.06 BU).",
+          "url": "https://cea.nic.in/wp-content/uploads/baseline/2025/12/User_Guide_V_21.0.pdf",
+          "as_of": "2025-12-01",
+          "status": "verified"
+        }
+      }
+    ]
+  }
+}

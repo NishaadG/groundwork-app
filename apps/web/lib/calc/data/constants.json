@@ -1,0 +1,174 @@
+{
+  "$comment": "Canonical constants. Every value has a source and as_of date. The Methodology page and the TS calc mirror are generated from this file. status: verified (checked against the primary source), estimate (market data, user-editable), assumption (stated as such in the UI).",
+  "constants": {
+    "pm_surya_ghar_subsidy": {
+      "label": "PM Surya Ghar central subsidy",
+      "value": {
+        "first_2_kw_inr_per_kw": 30000,
+        "third_kw_inr_per_kw": 18000,
+        "cap_inr": 78000
+      },
+      "unit": "₹",
+      "source": "Cabinet approves PM-Surya Ghar: Muft Bijli Yojana (PIB, 29 Feb 2024): CFA of 60% of system cost up to 2 kW and 40% of additional cost from 2 to 3 kW, capped at 3 kW. ₹30,000 for 1 kW, ₹60,000 for 2 kW, ₹78,000 for 3 kW or more.",
+      "source_url": "https://www.pib.gov.in/PressReleaseIframePage.aspx?PRID=2010133",
+      "as_of": "2026-10-01",
+      "status": "verified"
+    },
+    "pm_surya_ghar_ghs_subsidy": {
+      "label": "PM Surya Ghar subsidy for housing societies (common facilities)",
+      "value": {
+        "inr_per_kw": 18000,
+        "inr_per_kw_special_category": 19800,
+        "kw_per_house": 3,
+        "cap_kw": 500
+      },
+      "unit": "₹/kWp",
+      "source": "MNRE Office Memorandum No. 318/17/2024-Grid Connected Rooftop (7 June 2024), Operational Guidelines, CFA to Residential Consumers, §5(e) and §5(h): GHS/RWA common facilities including EV charging, ₹18,000/kWp (₹19,800 in special category states), up to 500 kWp at 3 kWp per house. The cap includes plants installed by individual residents. The connection must serve common facilities only.",
+      "source_url": "https://mnre.gov.in/en/notice/operational-guidelines-for-implementation-of-the-component-central-financial-assistance-to-residential-consumers-of-pm-surya-ghar-muft-bijli-yojana/",
+      "as_of": "2026-10-02",
+      "status": "verified"
+    },
+    "grid_emission_factor": {
+      "label": "Grid emission factor (India, weighted average)",
+      "value": 0.71,
+      "unit": "kg CO₂/kWh",
+      "source": "CEA CO₂ Baseline Database for the Indian Power Sector, User Guide v21.0 (Dec 2025): FY 2024-25 weighted average 0.71 tCO₂/MWh (1,234.19 Mt CO₂ / 1,739.06 BU).",
+      "source_url": "https://cea.nic.in/wp-content/uploads/baseline/2025/12/User_Guide_V_21.0.pdf",
+      "as_of": "2025-12-01",
+      "status": "verified"
+    },
+    "roof_area_per_kw": {
+      "label": "Shadow-free roof area per kW",
+      "value": 10,
+      "unit": "m²/kW",
+      "source": "MNRE FAQ, Grid Connected Solar Rooftop System: 'A 1 kW rooftop system generally requires 10 sq. metres of shadow-free area.'",
+      "source_url": "https://solarrooftop.pmsuryaghar.gov.in/pdf/faq_national_portal2024021301.pdf",
+      "as_of": "2024-02-13",
+      "status": "verified"
+    },
+    "performance_ratio": {
+      "label": "Performance ratio",
+      "value": 0.77,
+      "unit": "",
+      "source": "Typical for Indian rooftop systems (heat, inverter, soiling and wiring losses). Cross-checked against PVGIS with 14% system loss.",
+      "source_url": "https://re.jrc.ec.europa.eu/pvg_tools/en/",
+      "as_of": "2026-10-01",
+      "status": "assumption"
+    },
+    "shading_factor": {
+      "label": "Shading factor",
+      "value": {
+        "none": 1.0,
+        "partial": 0.9,
+        "heavy": 0.75
+      },
+      "unit": "",
+      "source": "Groundwork assumption: a simple derate applied to the performance ratio. Shown to the user with the shading choice.",
+      "source_url": null,
+      "as_of": "2026-10-01",
+      "status": "assumption"
+    },
+    "panel_degradation": {
+      "label": "Panel output loss per year",
+      "value": 0.006,
+      "unit": "per year",
+      "source": "Typical crystalline-silicon module warranty curves (about 0.5–0.7% a year).",
+      "source_url": null,
+      "as_of": "2026-10-01",
+      "status": "assumption"
+    },
+    "tariff_escalation_default": {
+      "label": "Electricity price rise per year (default)",
+      "value": 0.03,
+      "unit": "per year",
+      "source": "Groundwork assumption, adjustable from 0% to 8% on every report.",
+      "source_url": null,
+      "as_of": "2026-10-01",
+      "status": "assumption"
+    },
+    "analysis_years": {
+      "label": "System life used for savings",
+      "value": 25,
+      "unit": "years",
+      "source": "Standard 25-year module performance warranty period.",
+      "source_url": null,
+      "as_of": "2026-10-01",
+      "status": "assumption"
+    },
+    "solar_cost_benchmark": {
+      "label": "Installed cost before subsidy (Maharashtra)",
+      "value": [
+        {
+          "kw": 1,
+          "inr": 80000
+        },
+        {
+          "kw": 2,
+          "inr": 160000
+        },
+        {
+          "kw": 3,
+          "inr": 202000
+        },
+        {
+          "kw": 4,
+          "inr": 268500
+        },
+        {
+          "kw": 5,
+          "inr": 336000
+        },
+        {
+          "kw": 10,
+          "inr": 569000
+        }
+      ],
+      "unit": "₹",
+      "source": "Midpoints of Maharashtra on-grid price ranges (Bluebird Solar, 2025). The 3 kW point sits within SolarSquare's indicative Pune price of about ₹2.15 lakh (Jul 2026). Linear between points. Editable on every report, because installer quotes vary.",
+      "source_url": "https://bluebirdsolar.com/blogs/all/solar-rooftop-system-price-subsidy-in-maharashtra",
+      "as_of": "2026-07-11",
+      "status": "estimate"
+    },
+    "urban_water_benchmark_lpcd": {
+      "label": "Urban water supply benchmark",
+      "value": 135,
+      "unit": "litres per person per day",
+      "source": "CPHEEO / MoUD Handbook of Service Level Benchmarking: per capita supply of water, benchmark 135 lpcd.",
+      "source_url": "https://cpheeo.gov.in/upload/uploadfiles/files/Handbook.pdf",
+      "as_of": "2026-10-01",
+      "status": "verified"
+    },
+    "running_toilet_litres_per_day": {
+      "label": "Water a running toilet can waste",
+      "value": 757,
+      "unit": "litres a day",
+      "source": "US EPA WaterSense, Fix a Leak Week family fact sheet: a constantly running toilet can waste 200 gallons or more every day (200 US gal = 757 L).",
+      "source_url": "https://19january2017snapshot.epa.gov/www3/watersense/docs/family-fact-sheet_508.pdf",
+      "as_of": "2026-10-01",
+      "status": "verified"
+    },
+    "dripping_tap_litres_per_year": {
+      "label": "Water a tap dripping once a second wastes",
+      "value": 11356,
+      "unit": "litres a year",
+      "source": "US EPA WaterSense, Fix a Leak Week: a faucet dripping once per second can waste more than 3,000 gallons per year (3,000 US gal = 11,356 L).",
+      "source_url": "https://www.epa.gov/watersense/fix-leak-week",
+      "as_of": "2026-10-01",
+      "status": "verified"
+    },
+    "waste_streams": {
+      "label": "Household waste streams",
+      "value": [
+        "wet",
+        "dry",
+        "sanitary",
+        "special_care"
+      ],
+      "unit": "",
+      "source": "Solid Waste Management Rules, 2026 (in force from 1 April 2026): households segregate waste into four streams at source: wet, dry, sanitary and special care.",
+      "source_url": "https://ddnews.gov.in/en/new-waste-rules-from-april-1-four-way-segregation-mandatory-strict-penalties-for-violations/",
+      "as_of": "2026-04-01",
+      "status": "verified"
+    }
+  }
+}

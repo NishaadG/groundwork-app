@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/*
+ * Groundwork design tokens. Colour means something; it is never decoration.
+ * Resource colours (sun, tank, kraft) are for marks, rules and fills. Text stays ink,
+ * except leaf (saved), alert (errors) and the *-ink variants, which pass AA as text.
+ */
+:root {
+  --limewash: #eef1ef;
+  --parapet: #ffffff;
+  --concrete: #d5dad7;
+  --concrete-strong: #b4bcb8;
+  --field: #7f8783;
+  --cell: #18213d;
+  --cell-muted: #4e5770;
+  --sun: #f3b21b;
+  --sun-ink: #855700;
+  --tank: #1c7c8c;
+  --tank-ink: #166673;
+  --kraft: #a9774a;
+  --kraft-ink: #7a5130;
+  --leaf: #2f7a4b;
+  --alert: #c2410c;
+  --on-cell: #ffffff;
+  --sheet-shadow: 0 12px 32px -12px rgb(24 33 61 / 0.28);
+  --panel-cell: #22407f;
+  --panel-cell-line: #7b90c8;
+  --tank-body: #1b1e24;
+  /* Chart series (validated with the dataviz palette checker, light surface) */
+  --chart-use: #3a5ba8;
+  --chart-gen: #b97f00;
+  --chart-water: #008aa0;
+  --chart-grid: #e2e6e3;
+  color-scheme: light;
+}
+
+/* "Terrace at night" */
+@media screen and (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --limewash: #10162a;
+    --parapet: #18213d;
+    --concrete: #2c3654;
+    --concrete-strong: #46517a;
+    --field: #6b77a0;
+    --cell: #e7eaf0;
+    --cell-muted: #b3b9c8;
+    --sun: #f7c548;
+    --sun-ink: #f7c548;
+    --tank: #3ba7b8;
+    --tank-ink: #5cc0cf;
+    --kraft: #c79563;
+    --kraft-ink: #d9a878;
+    --leaf: #4fa36e;
+    --alert: #f07a45;
+    --on-cell: #10162a;
+    --sheet-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.6);
+    --panel-cell: #2c4fa3;
+    --panel-cell-line: #8ea3dd;
+    --tank-body: #070a14;
+    --chart-use: #6f8cd6;
+    --chart-gen: #be8a26;
+    --chart-water: #1fa3b8;
+    --chart-grid: #2c3654;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --limewash: #10162a;
+  --parapet: #18213d;
+  --concrete: #2c3654;
+  --concrete-strong: #46517a;
+  --field: #6b77a0;
+  --cell: #e7eaf0;
+  --cell-muted: #b3b9c8;
+  --sun: #f7c548;
+  --sun-ink: #f7c548;
+  --tank: #3ba7b8;
+  --tank-ink: #5cc0cf;
+  --kraft: #c79563;
+  --kraft-ink: #d9a878;
+  --leaf: #4fa36e;
+  --alert: #f07a45;
+  --on-cell: #10162a;
+  --sheet-shadow: 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --panel-cell: #2c4fa3;
+  --panel-cell-line: #8ea3dd;
+  --tank-body: #070a14;
+  --chart-use: #6f8cd6;
+  --chart-gen: #be8a26;
+  --chart-water: #1fa3b8;
+  --chart-grid: #2c3654;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-limewash: var(--limewash);
+  --color-parapet: var(--parapet);
+  --color-concrete: var(--concrete);
+  --color-concrete-strong: var(--concrete-strong);
+  --color-field: var(--field);
+  --color-cell: var(--cell);
+  --color-cell-muted: var(--cell-muted);
+  --color-sun: var(--sun);
+  --color-sun-ink: var(--sun-ink);
+  --color-tank: var(--tank);
+  --color-tank-ink: var(--tank-ink);
+  --color-kraft: var(--kraft);
+  --color-kraft-ink: var(--kraft-ink);
+  --color-leaf: var(--leaf);
+  --color-alert: var(--alert);
+  --color-on-cell: var(--on-cell);
+  --color-chart-use: var(--chart-use);
+  --color-chart-gen: var(--chart-gen);
+  --color-chart-water: var(--chart-water);
+  --color-chart-grid: var(--chart-grid);
+
+  --font-sans: var(--font-anek-latin), var(--font-anek-devanagari), ui-sans-serif, system-ui,
+    sans-serif;
+
+  /* Type scale, ratio 1.25 on a 17px base */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.3125rem;
+  --text-xl: 1.6875rem;
+  --text-2xl: 2.0625rem;
+  --text-3xl: 2.625rem;
+  --text-4xl: 3.25rem;
+  --text-5xl: 4.125rem;
+  --text-6xl: 5.125rem;
+
+  /* Radius hierarchy. One radius for everything is a tell. */
+  --radius-input: 6px;
+  --radius-button: 10px;
+  --radius-panel: 14px;
+  --radius-sheet: 20px;
+
+  --shadow-sheet: var(--sheet-shadow);
+
+  --ease-terrace: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-sheet-up: sheet-up 240ms var(--ease-terrace);
+  --animate-sheet-down: sheet-down 160ms var(--ease-terrace);
+  --animate-fade-in: fade-in 160ms var(--ease-terrace);
+  --animate-fade-out: fade-out 160ms var(--ease-terrace);
+  --animate-accordion-down: accordion-down 240ms var(--ease-terrace);
+  --animate-accordion-up: accordion-up 160ms var(--ease-terrace);
+
+  @keyframes sheet-up {
+    from {
+      transform: translateY(24px);
+      opacity: 0;
+    }
+  }
+  @keyframes sheet-down {
+    to {
+      transform: translateY(24px);
+      opacity: 0;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/* Type roles: one family, contrast from Anek's width axis */
+@utility type-display {
+  font-variation-settings: "wdth" 125;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+}
+
+@utility type-heading {
+  font-variation-settings: "wdth" 110;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
+}
+
+@utility type-body {
+  font-variation-settings: "wdth" 100;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+@utility type-ui {
+  font-variation-settings: "wdth" 100;
+  font-weight: 500;
+}
+
+@utility type-number {
+  font-variation-settings: "wdth" 85;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: 0;
+}
+
+@utility type-small {
+  font-variation-settings: "wdth" 95;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--limewash);
+    color: var(--cell);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.6;
+    font-variation-settings: "wdth" 100;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--cell);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--cell);
+    color: var(--on-cell);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Print: the solar report prints as a clean document ("Print or save as PDF") */
+@media print {
+  @page {
+    margin: 14mm;
+  }
+  html {
+    color-scheme: light;
+  }
+  body {
+    background: #ffffff;
+  }
+  figure,
+  section {
+    break-inside: avoid;
+  }
+}
