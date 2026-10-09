@@ -74,6 +74,8 @@ export function TryDemoButton({ className, label }: { className?: string; label:
   const go = async () => {
     setBusy(true);
     try {
+      // Someone may already be signed in on this browser: the demo replaces that session.
+      await authClient().signOut().catch(() => undefined);
       await authClient().signIn(DEMO_EMAIL, DEMO_PASSWORD, false);
       await auth?.refresh();
       router.replace(await destinationAfterSignIn(null));

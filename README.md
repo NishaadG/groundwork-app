@@ -2,6 +2,8 @@
 
 **Know what your home runs on.**
 
+**Live app:** https://main.dj7ciboa1zoj1.amplifyapp.com · click **Try the demo** to open a sample household, no sign-up.
+
 Groundwork is a resource-savings app for Indian homes and housing societies. It starts from what a household already has, an electricity bill, a water meter and a pile of waste, and turns each into a concrete action with a rupee figure on it. Everything that actually changes is tracked in one ledger: **₹ saved · kWh · litres · kg kept out of landfill · CO₂ avoided**.
 
 ## What it does
@@ -28,7 +30,7 @@ flowchart LR
     L["Lambda · FastAPI<br/>(Function URL, streaming)"]
     D[(DynamoDB<br/>single table)]
     S[(S3 uploads<br/>7-day expiry)]
-    B["Bedrock · Amazon Nova<br/>photo reading + copilot"]
+    B["AI provider<br/>Bedrock (Nova) or Gemini<br/>photo reading + copilot"]
   end
   N[NASA POWER]
   W --> A
@@ -45,7 +47,7 @@ flowchart LR
 |---|---|
 | Web | Next.js 15 (App Router), TypeScript, Tailwind CSS 4, next-intl, Radix, TanStack Query, MapLibre with OpenFreeMap |
 | API | Python 3.12, FastAPI on Lambda (arm64, Lambda Web Adapter), Pydantic, boto3 |
-| AI | Amazon Bedrock (Nova Lite) with forced tool-use JSON for photo reading; a Strands Agents orchestrator with solar, water and waste specialist agents for the copilot, streamed over Server-Sent Events |
+| AI | Photo reading uses forced tool-use JSON through one provider layer (`services/api/app/services/ai.py`): Amazon Bedrock (Nova Lite) by default, or Gemini with a quota-aware fallback across models and a cache for identical requests. The copilot is a Strands Agents orchestrator with solar, water and waste specialist agents, streamed over Server-Sent Events |
 | Data | DynamoDB single-table design, S3 for short-lived uploads, Cognito for sign-in |
 | Infra | AWS SAM (`infra/template.yaml`), Amplify Gen 2 (`amplify/`) |
 
@@ -68,10 +70,20 @@ The Methodology page in the app lists every formula, constant and tariff with it
 | Solar yield vs the European Commission's PVGIS (1 kW, flat panels) | Within 5.3% in Pune (+2.2%), Mumbai (+5.3%), Bengaluru (+4.6%), Delhi (−3.3%) and Chennai (+0.6%). Target ±12% |
 | Overnight leak detector, synthetic meter data with 20 injected leaks per run | Precision 0.974 (worst run 0.947), recall 1.0. Real-world performance is measured in the pilot |
 | Python and TypeScript calculations agree | Shared fixtures checked in both test suites |
-| API | 224 pytest tests with mocked AWS, including a security sweep (every private route needs a token; no user ids in request bodies) |
+| API | 257 pytest tests with mocked AWS, including a security sweep (every private route needs a token; no user ids in request bodies) |
 | Web | 130 unit tests and 80+ Playwright browser tests on desktop and mobile, including an axe accessibility scan of every page in light and dark mode |
 
-Photo-reading accuracy (bills, meters, waste) and copilot routing are measured with `scripts/eval_vision.py` and `scripts/eval_copilot.py` against real Bedrock.
+### Photo reading and the copilot
+
+Measured with `scripts/eval_photos.py` against the live provider (sample sizes are small, and the numbers are re-run as the code changes):
+
+| Photos | Sample | Result |
+|---|---|---|
+| Bills | 5 synthetic bills (rendered with known values, then rotated, blurred and shaded) | Units, billing period, amount, DISCOM and sanctioned load all read correctly in 5 of 5. Synthetic, so this tests reading and the code checks, not the range of real bill layouts |
+| Waste | 15 TrashNet photos (cardboard, glass, metal, paper, plastic) | The first item falls in the right material family in 15 of 15 |
+| Water meters | 10 photos from a public dataset, each read twice and reconciled in code | Exact to the litre: 5 of 10. Right to the nearest cubic metre: 7 of 10. Every doubtful reading is flagged for the user to check; none that was wrong by a whole cubic metre was marked high confidence |
+
+Run `python scripts/fetch_eval_photos.py` to download the sample photos, then `python scripts/eval_photos.py`. Every photo reading goes through a confirm screen before anything is saved. Copilot routing is measured with `scripts/eval_copilot.py`.
 
 ## Development
 
