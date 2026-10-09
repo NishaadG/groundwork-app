@@ -136,12 +136,25 @@ _UNAVAILABLE = ("AuthenticationError", "PermissionDeniedError", "RateLimitError"
 class OpenAIConverse:
     """A Bedrock-runtime look-alike over an OpenAI-compatible client (only `.converse`)."""
 
-    def __init__(self, client: Any, model: str) -> None:
+    def __init__(self, client: Any, model: str, fallbacks: tuple[str, ...] = ()) -> None:
         self.client = client
         self.model = model
+        self.fallbacks = fallbacks
 
     def converse(self, *, modelId: str = "", **kw: Any) -> dict[str, Any]:  # noqa: N803
-        req = to_openai(self.model, **kw)
+        """Try the main model, then each fallback when one is out of quota (free-tier limits
+        are per model) or gone."""
+        failure: AiUnavailable | None = None
+        for model in (self.model, *self.fallbacks):
+            try:
+                return self._one(to_openai(model, **kw))
+            except AiUnavailable as exc:
+                failure = exc
+                log.warning("model %s unavailable, trying the next: %s", model, str(exc)[:120])
+        assert failure is not None
+        raise failure
+
+    def _one(self, req: dict[str, Any]) -> dict[str, Any]:
         out: dict[str, Any] = {}
         # A forced tool is sometimes answered with text instead; ask once more.
         for _ in range(2 if "tool_choice" in req else 1):
@@ -165,6 +178,7 @@ def _openai_converse() -> OpenAIConverse:
     return OpenAIConverse(
         openai.OpenAI(api_key=api_key(), base_url=s.ai_base_url, timeout=60, max_retries=2),
         s.ai_model,
+        tuple(m.strip() for m in s.ai_fallback_models.split(",") if m.strip()),
     )
 
 

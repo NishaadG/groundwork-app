@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     ai_provider: Literal["bedrock", "openai", "gemini"] = "bedrock"
     ai_base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai/"
     ai_model: str = "gemini-3.5-flash"
+    ai_fallback_models: str = "gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash"
     ai_reasoning_effort: str = ""
     ai_key_param: str = ""
     ai_api_key: str = ""

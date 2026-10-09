@@ -43,6 +43,10 @@ Parameters:
   AiModel:
     Type: String
     Default: gemini-3.5-flash
+  AiFallbackModels:
+    Type: String
+    Default: gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash
+    Description: Tried in order when AiModel is out of quota (photo reading and tips)
   AiKeyParam:
     Type: String
     Default: /groundwork/ai-key
@@ -168,6 +172,7 @@ Resources:
           AI_BASE_URL: !Ref AiBaseUrl
           AI_MODEL: !Ref AiModel
           AI_KEY_PARAM: !Ref AiKeyParam
+          AI_FALLBACK_MODELS: !Ref AiFallbackModels
           EMAIL_FROM: !Ref EmailFrom
           SITE_URL: !Ref SiteUrl
       Policies:

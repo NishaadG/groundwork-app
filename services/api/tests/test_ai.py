@@ -131,3 +131,24 @@ def test_missing_key_is_unavailable(monkeypatch: pytest.MonkeyPatch) -> None:
     with pytest.raises(ai.AiUnavailable):
         ai.api_key()
     ai.api_key.cache_clear()
+
+
+def test_out_of_quota_model_falls_back_to_the_next() -> None:
+    class Quota(FakeOpenAI):
+        def create(self, **kw: Any) -> Any:
+            self.calls.append(kw)
+            if kw["model"] == "main":
+                raise type("RateLimitError", (Exception,), {})("quota")
+            return completion(json.dumps({"reading": 5}))
+
+    fake = Quota()
+    res = ai.OpenAIConverse(fake, "main", ("backup",)).converse(**converse_request({"text": "hi"}))
+    assert [c["model"] for c in fake.calls] == ["main", "backup"]
+    assert res["output"]["message"]["content"][0]["toolUse"]["input"] == {"reading": 5}
+
+
+def test_every_model_out_of_quota_is_unavailable() -> None:
+    fake = FakeOpenAI(error=type("RateLimitError", (Exception,), {})("quota"))
+    with pytest.raises(ai.AiUnavailable):
+        ai.OpenAIConverse(fake, "a", ("b",)).converse(**converse_request({"text": "hi"}))
+    assert [c["model"] for c in fake.calls] == ["a", "b"]
