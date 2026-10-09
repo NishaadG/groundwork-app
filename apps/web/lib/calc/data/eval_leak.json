@@ -1,5 +1,5 @@
 {
-  "run_on": "2026-10-01",
+  "run_on": "2026-10-10",
   "data": "Synthetic 15-minute household meter stream (scripts/synthetic_water.py) with a 1-litre meter resolution; 5 runs \u00d7 ~200 nights, 20 injected leaks of 1\u201330 litres an hour each; night-time noise: single and double toilet flushes and taps or showers left on for 30\u201345 minutes. Not real household data: real performance is measured in the pilot.",
   "targets": {
     "precision": 0.9,

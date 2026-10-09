@@ -1,5 +1,5 @@
 {
-  "run_on": "2026-10-01",
+  "run_on": "2026-10-10",
   "target_pct": 12,
   "method": "1 kW, no shading. Groundwork: NASA POWER 2001-2020 climatology x days x PR 0.77. PVGIS v5.3 PVcalc, 14% system loss, horizontal (angle=0) and at its optimal tilt.",
   "rows": [
