@@ -12,7 +12,7 @@
     "check:messages": "node scripts/check-messages.mjs",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "e2e:build": "node scripts/copy-maplibre-worker.mjs && cross-env NEXT_DIST_DIR=.next-e2e NEXT_PUBLIC_AUTH_MODE=mock NEXT_PUBLIC_API_URL=http://api.test next build",
+    "e2e:build": "node scripts/copy-maplibre-worker.mjs && cross-env NEXT_DIST_DIR=.next-e2e NEXT_PUBLIC_AUTH_MODE=mock NEXT_PUBLIC_API_URL=http://api.test NEXT_PUBLIC_DEMO_EMAIL=demo@example.com NEXT_PUBLIC_DEMO_PASSWORD=demo-pass-2026 next build",
     "prebuild": "node scripts/copy-maplibre-worker.mjs",
     "predev": "node scripts/copy-maplibre-worker.mjs"
   },

@@ -53,6 +53,7 @@
     "title": "Know what your home runs on.",
     "subtitle": "Snap your electricity bill. See what rooftop solar would cost on your roof, what the government pays, and when it pays you back.",
     "cta": "Check your roof",
+    "tryDemo": "Try the demo",
     "ctaNote": "Free to use. We don't share your details with installers.",
     "secondary": "How it works",
     "sampleTitle": "A Pune flat on MSEDCL",
@@ -517,6 +518,7 @@
     "codeHint": "The 6-digit code we emailed to {email}.",
     "remember": "Keep me signed in on this device",
     "or": "or",
+    "tryDemo": "Try the demo",
     "google": "Continue with Google",
     "notConfigured": "Sign-in isn't set up on this server yet. Please try again later.",
     "login": {

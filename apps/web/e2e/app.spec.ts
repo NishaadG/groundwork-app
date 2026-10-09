@@ -134,3 +134,22 @@ test("sign up, onboard across a refresh, sign out and back in, export, delete", 
   await expect(page.getByText("Your account and data have been deleted.")).toBeVisible();
   expect(store.size).toBe(0);
 });
+
+test("the demo button signs in to the sample household", async ({ page }) => {
+  await installFakeApi(page);
+  // The demo account exists (the real one is created once in Cognito and seeded through the API).
+  await page.addInitScript(() => {
+    if (!window.localStorage.getItem("gw.mock.auth")) {
+      window.localStorage.setItem(
+        "gw.mock.auth",
+        JSON.stringify({
+          accounts: [{ sub: "demo-sub", email: "demo@example.com", password: "demo-pass-2026", confirmed: true }],
+          session: null,
+        }),
+      );
+    }
+  });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Try the demo" }).click();
+  await expect(page).toHaveURL(/\/(app|onboarding)$/);
+});

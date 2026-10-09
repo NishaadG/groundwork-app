@@ -11,6 +11,7 @@ import sample from "@/lib/calc/data/sample_household.json";
 import { calcSolar, type Shading } from "@/lib/calc/solar";
 import { loadTariff } from "@/lib/calc/tariff";
 import { formatInr, formatNumber } from "@/lib/format";
+import { TryDemoButton } from "@/components/features/auth/auth-forms";
 import { Link } from "@/i18n/navigation";
 
 const tariff = loadTariff(sample.inputs.tariff);
@@ -48,6 +49,7 @@ export function Hero() {
           <Button asChild size="lg">
             <Link href="/signup">{t("cta")}</Link>
           </Button>
+          <TryDemoButton label={t("tryDemo")} />
           <Button asChild variant="link">
             <Link href="/how-it-works">{t("secondary")}</Link>
           </Button>

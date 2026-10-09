@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { useAuth } from "@/components/providers/app-providers";
+import { useAuth, useOptionalAuth } from "@/components/providers/app-providers";
 import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";
 import { Link, useRouter } from "@/i18n/navigation";
@@ -58,6 +58,36 @@ function NotConfigured() {
     <p role="status" className="rounded-input border border-concrete bg-parapet px-3 py-2.5 text-sm text-cell-muted">
       {t("notConfigured")}
     </p>
+  );
+}
+
+const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "";
+const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD ?? "";
+
+/** Signs in to the public sample household. Shown only when its sign-in is configured;
+ * the account holds no private data. */
+export function TryDemoButton({ className, label }: { className?: string; label: string }) {
+  const router = useRouter();
+  const auth = useOptionalAuth();
+  const [busy, setBusy] = useState(false);
+  if (!DEMO_EMAIL || !DEMO_PASSWORD) return null;
+  const go = async () => {
+    setBusy(true);
+    try {
+      await authClient().signIn(DEMO_EMAIL, DEMO_PASSWORD, false);
+      await auth?.refresh();
+      router.replace(await destinationAfterSignIn(null));
+    } catch {
+      // The demo account is unavailable: fall back to the normal sign-in page.
+      router.push("/login");
+    }
+  };
+  return (
+    <div className={className}>
+      <Button type="button" variant="secondary" size="lg" disabled={busy} onClick={go}>
+        {label}
+      </Button>
+    </div>
   );
 }
 
@@ -153,6 +183,7 @@ export function LoginForm() {
         </Button>
       </form>
       <GoogleButton />
+      <TryDemoButton className="mt-6 grid [&>button]:w-full" label={t("tryDemo")} />
       <p className="mt-8 text-sm text-cell-muted">
         {t("login.noAccount")}{" "}
         <Link href="/signup" className="text-cell underline underline-offset-4 hover:no-underline">
