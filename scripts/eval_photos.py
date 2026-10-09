@@ -35,6 +35,9 @@ from app.services import extraction, water  # noqa: E402
 from app.services import waste as waste_svc  # noqa: E402
 
 EVAL = ROOT / "data" / "eval"
+# Free-tier quotas are small; set EVAL_PER_CLASS / EVAL_METERS to size a run.
+PER_CLASS = int(os.environ.get("EVAL_PER_CLASS", "6"))
+N_METERS = int(os.environ.get("EVAL_METERS", "20"))
 
 PLASTIC = {"pet", "hdpe", "ldpe_film", "mixed_plastic", "multilayer"}
 FAMILIES = {
@@ -44,6 +47,9 @@ FAMILIES = {
     "paper": {"newspaper", "mixed_paper"},
     "plastic": PLASTIC,
 }
+
+
+MODELS_USED: dict[str, int] = {}
 
 
 def call(block: dict[str, Any], prompt: str, tool: str, schema: dict[str, Any], tokens: int) -> dict[str, Any]:
@@ -59,6 +65,7 @@ def call(block: dict[str, Any], prompt: str, tool: str, schema: dict[str, Any], 
                 },
                 inferenceConfig={"temperature": 0, "maxTokens": tokens},
             )
+            MODELS_USED[res.get("model", "?")] = MODELS_USED.get(res.get("model", "?"), 0) + 1
             return next(p["toolUse"]["input"] for p in res["output"]["message"]["content"] if "toolUse" in p)
         except Exception as exc:
             if attempt == 3:
@@ -186,7 +193,7 @@ def eval_waste() -> dict[str, Any]:
     per_class: dict[str, list[int]] = {}
     misses = []
     for folder in sorted((EVAL / "waste").iterdir()):
-        for p in sorted(folder.glob("*.jpg")):
+        for p in sorted(folder.glob("*.jpg"))[:PER_CLASS]:
             raw = call(image_block(p.read_bytes()), waste_svc.PROMPT, "record_waste", waste_svc.schema(), 800)
             got = [i.get("material") for i in raw.get("items", [])]
             family = FAMILIES[folder.name]
@@ -213,7 +220,7 @@ def eval_waste() -> dict[str, Any]:
 
 
 def eval_meters() -> dict[str, Any]:
-    rows = list(csv.DictReader(open(EVAL / "meters" / "truth.csv", encoding="utf-8")))
+    rows = list(csv.DictReader(open(EVAL / "meters" / "truth.csv", encoding="utf-8")))[:N_METERS]
     exact = whole = low_conf = wrong_and_confident = 0
     misses = []
     for row in rows:
@@ -248,10 +255,10 @@ if __name__ == "__main__":
     kinds = sys.argv[1:] or ["bills", "waste", "meters"]
     path = EVAL / "photo_eval.json"
     result = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-    result["model"] = get_settings().ai_model
     result["run_on"] = date.today().isoformat()
     for k in kinds:
         print(f"== {k}", flush=True)
         result[k] = {"bills": eval_bills, "waste": eval_waste, "meters": eval_meters}[k]()
         print(json.dumps({a: b for a, b in result[k].items() if a != "misses"}, indent=1), flush=True)
+        result["models_used"] = MODELS_USED
         path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")

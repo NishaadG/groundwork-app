@@ -192,6 +192,7 @@ class OpenAIConverse:
         for model in (self.model, *self.fallbacks):
             try:
                 out = self._one(to_openai(model, **kw))
+                out["model"] = model
                 if key and any("toolUse" in p for p in out["output"]["message"]["content"]):
                     _cache_put(key, out)
                 return out
