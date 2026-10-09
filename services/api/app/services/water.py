@@ -409,14 +409,93 @@ METER_PROMPT = (Path(__file__).parent.parent / "agents" / "prompts" / "meter_rea
 METER_SCHEMA: dict[str, Any] = {
     "type": "object",
     "properties": {
-        "reading": {"type": ["number", "null"]},
+        "whole_digits": {"type": "string"},
+        "fraction_digits": {"type": "string"},
         "unit": {"type": "string", "enum": ["litres", "cubic_metres", "kilolitres", "unknown"]},
         "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
         "evidence": {"type": ["string", "null"]},
     },
-    "required": ["reading", "unit", "confidence"],
+    "required": ["whole_digits", "fraction_digits", "unit", "confidence"],
 }
 TO_LITRES = {"litres": 1.0, "cubic_metres": 1000.0, "kilolitres": 1000.0}
+
+
+def _digits(value: Any) -> str:
+    return "".join(ch for ch in str(value or "") if ch.isdigit())
+
+
+def _enhanced(block: dict[str, Any]) -> dict[str, Any]:
+    """A second view of the photo (contrast and sharpness lifted) for the cross-check."""
+    import io
+
+    from PIL import Image, ImageFilter, ImageOps
+
+    img = Image.open(io.BytesIO(block["image"]["source"]["bytes"])).convert("RGB")
+    img = ImageOps.autocontrast(img, cutoff=1).filter(ImageFilter.UnsharpMask(2, 150, 3))
+    out = io.BytesIO()
+    img.save(out, format="JPEG", quality=92)
+    return {"image": {"format": "jpeg", "source": {"bytes": out.getvalue()}}}
+
+
+def _read_once(block: dict[str, Any]) -> dict[str, Any]:
+    res = extraction.bedrock().converse(
+        modelId=get_settings().vision_model_id,
+        messages=[{"role": "user", "content": [block, {"text": METER_PROMPT}]}],
+        toolConfig={
+            "tools": [
+                {
+                    "toolSpec": {
+                        "name": "record_meter",
+                        "description": "Record the meter reading.",
+                        "inputSchema": {"json": METER_SCHEMA},
+                    }
+                }
+            ],
+            "toolChoice": {"tool": {"name": "record_meter"}},
+        },
+        inferenceConfig={"temperature": 0, "maxTokens": 400},
+    )
+    return dict(
+        next(p["toolUse"]["input"] for p in res["output"]["message"]["content"] if "toolUse" in p)
+    )
+
+
+def read_meter_image(block: dict[str, Any]) -> dict[str, Any]:
+    """Two independent reads (the photo, and an enhanced copy); the code reconciles them.
+
+    Whole-unit digits must agree or the result is flagged `low`. Fraction digits are kept only
+    when both reads agree, otherwise the reading is given to the whole unit (`medium`): a wheel
+    caught between two numbers is a guess, and a guess would look like a measurement.
+    """
+    first = _read_once(block)
+    try:
+        second = _read_once(_enhanced(block))
+    except Exception:
+        second = None  # the first read alone cannot be cross-checked, so it can't be `high`
+    unit = first.get("unit", "unknown")
+    whole = _digits(first.get("whole_digits"))
+    frac = _digits(first.get("fraction_digits"))
+    confidence = first.get("confidence", "low")
+    note = first.get("evidence")
+    if second is None or second.get("unit") != unit:
+        confidence = "medium" if confidence == "high" else confidence
+    elif _digits(second.get("whole_digits")) != whole:
+        confidence, note = (
+            "low",
+            f"Two reads disagreed ({whole} vs {_digits(second.get('whole_digits'))})",
+        )
+    elif _digits(second.get("fraction_digits")) != frac:
+        frac, confidence = "", "medium"
+        note = "The fraction wheels were not clear, so the reading is to the whole unit"
+    if not whole or unit not in TO_LITRES:
+        return {"litres": None, "unit": unit, "confidence": "low", "evidence": note}
+    reading = float(whole) + (float(f"0.{frac}") if frac else 0.0)
+    return {
+        "litres": round(reading * TO_LITRES[unit], 1),
+        "unit": unit,
+        "confidence": confidence,
+        "evidence": note,
+    }
 
 
 def read_meter_photo(sub: str, key: str) -> dict[str, Any]:
@@ -430,40 +509,8 @@ def read_meter_photo(sub: str, key: str) -> dict[str, Any]:
     extraction.check_rate_limit(sub)
     block = extraction._image_block(obj["Body"].read(), obj.get("ContentType", "image/jpeg"))
     try:
-        res = extraction.bedrock().converse(
-            modelId=s.vision_model_id,
-            messages=[{"role": "user", "content": [block, {"text": METER_PROMPT}]}],
-            toolConfig={
-                "tools": [
-                    {
-                        "toolSpec": {
-                            "name": "record_meter",
-                            "description": "Record the meter reading.",
-                            "inputSchema": {"json": METER_SCHEMA},
-                        }
-                    }
-                ],
-                "toolChoice": {"tool": {"name": "record_meter"}},
-            },
-            inferenceConfig={"temperature": 0, "maxTokens": 300},
-        )
-        raw = next(
-            p["toolUse"]["input"] for p in res["output"]["message"]["content"] if "toolUse" in p
-        )
+        return read_meter_image(block)
     except Exception as exc:
         if extraction.ai_unavailable(exc):
             raise extraction.unavailable_error() from exc
         raise ApiError(502, "extraction_failed", "We couldn't read this meter.") from exc
-    reading, unit = raw.get("reading"), raw.get("unit", "unknown")
-    confidence = raw.get("confidence", "low")
-    litres = None
-    if isinstance(reading, int | float) and reading >= 0 and unit in TO_LITRES:
-        litres = round(float(reading) * TO_LITRES[unit], 1)
-    else:
-        confidence = "low"
-    return {
-        "litres": litres,
-        "unit": unit,
-        "confidence": confidence,
-        "evidence": raw.get("evidence"),
-    }

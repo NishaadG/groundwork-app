@@ -4,7 +4,7 @@ from typing import Any
 import pytest
 from fastapi.testclient import TestClient
 
-from app.services import extraction
+from app.services import extraction, water
 from tests.conftest import MintToken
 
 
@@ -200,7 +200,8 @@ def test_meter_photo_converts_units(
         "bedrock",
         lambda: FakeBedrock(
             {
-                "reading": 482.137,
+                "whole_digits": "00482",
+                "fraction_digits": "137",
                 "unit": "cubic_metres",
                 "confidence": "high",
                 "evidence": "00482 137",
@@ -214,7 +215,9 @@ def test_meter_photo_converts_units(
     monkeypatch.setattr(
         extraction,
         "bedrock",
-        lambda: FakeBedrock({"reading": 12, "unit": "unknown", "confidence": "high"}),
+        lambda: FakeBedrock(
+            {"whole_digits": "12", "fraction_digits": "", "unit": "unknown", "confidence": "high"}
+        ),
     )
     r = client.post(
         "/v1/water/meter-photo", headers=h, json={"s3_key": "uploads/meterman/meter/a.jpg"}
@@ -227,3 +230,61 @@ def test_meter_photo_converts_units(
         json={"s3_key": "uploads/meterman/meter/a.jpg"},
     )
     assert other.status_code == 404
+
+
+class Scripted:
+    """Returns one scripted reading per call (first read, then the enhanced-copy read)."""
+
+    def __init__(self, *reads: dict[str, Any]) -> None:
+        self.reads = list(reads)
+
+    def converse(self, **kwargs: Any) -> dict[str, Any]:
+        return {"output": {"message": {"content": [{"toolUse": {"input": self.reads.pop(0)}}]}}}
+
+
+def read(
+    whole: str, frac: str = "", conf: str = "high", unit: str = "cubic_metres"
+) -> dict[str, Any]:
+    return {"whole_digits": whole, "fraction_digits": frac, "unit": unit, "confidence": conf}
+
+
+def meter_image() -> dict[str, Any]:
+    import io
+
+    from PIL import Image
+
+    buf = io.BytesIO()
+    Image.new("RGB", (60, 60), "white").save(buf, format="JPEG")
+    return {"image": {"format": "jpeg", "source": {"bytes": buf.getvalue()}}}
+
+
+@pytest.mark.parametrize(
+    ("first", "second", "litres", "confidence"),
+    [
+        (read("00325", "663"), read("00325", "663"), 325663.0, "high"),
+        # Fraction wheels differ: keep only the whole unit and say so
+        (read("00325", "663"), read("00325", "683"), 325000.0, "medium"),
+        # Whole digits differ: the reading is flagged for the user to check
+        (read("00325", "663"), read("00345", "663"), 325663.0, "low"),
+        # Different units on the two reads can't be trusted either
+        (read("00325", "663"), read("00325", "663", unit="litres"), 325663.0, "medium"),
+    ],
+)
+def test_two_reads_must_agree_for_high_confidence(
+    monkeypatch: pytest.MonkeyPatch,
+    first: dict[str, Any],
+    second: dict[str, Any],
+    litres: float,
+    confidence: str,
+) -> None:
+    model = Scripted(first, second)
+    monkeypatch.setattr(extraction, "bedrock", lambda: model)
+    out = water.read_meter_image(meter_image())
+    assert out["litres"] == litres and out["confidence"] == confidence
+
+
+def test_no_whole_digits_means_no_reading(monkeypatch: pytest.MonkeyPatch) -> None:
+    model = Scripted(read(""), read(""))
+    monkeypatch.setattr(extraction, "bedrock", lambda: model)
+    out = water.read_meter_image(meter_image())
+    assert out["litres"] is None and out["confidence"] == "low"

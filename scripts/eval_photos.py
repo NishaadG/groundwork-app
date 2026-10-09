@@ -220,33 +220,33 @@ def eval_waste() -> dict[str, Any]:
 
 
 def eval_meters() -> dict[str, Any]:
+    """Runs the production reader (two reads, reconciled in code) on each photo."""
     rows = list(csv.DictReader(open(EVAL / "meters" / "truth.csv", encoding="utf-8")))[:N_METERS]
-    exact = whole = low_conf = wrong_and_confident = 0
+    exact = whole = flagged = confident_wrong = 0
     misses = []
     for row in rows:
-        raw = call(image_block((EVAL / "meters" / row["file"]).read_bytes()), water.METER_PROMPT, "record_meter", water.METER_SCHEMA, 300)
-        litres = None
-        if isinstance(raw.get("reading"), int | float) and raw.get("unit") in water.TO_LITRES:
-            litres = raw["reading"] * water.TO_LITRES[raw["unit"]]
+        try:
+            out = water.read_meter_image(image_block((EVAL / "meters" / row["file"]).read_bytes()))
+        except Exception as exc:  # a call that fails outright counts as unread
+            out = {"litres": None, "confidence": "low", "evidence": f"{type(exc).__name__}"}
         truth = float(row["litres"])
-        hit = close(litres, truth, 1.5)
-        hit_whole = close(litres, truth, 1000)  # right to the nearest m3 (black digits)
+        hit = close(out["litres"], truth, 1.5)
+        hit_whole = close(out["litres"], truth, 1000)  # right to the nearest m3
         exact += hit
         whole += hit_whole
-        conf = raw.get("confidence")
-        low_conf += conf == "low"
-        wrong_and_confident += (not hit) and conf in ("high", "medium")
+        flagged += out["confidence"] != "high"
+        confident_wrong += (not hit_whole) and out["confidence"] == "high"
         if not hit:
-            misses.append({"file": row["file"], "read_litres": litres, "truth_litres": truth, "confidence": conf})
+            misses.append({"file": row["file"], "read_litres": out["litres"], "truth_litres": truth, "confidence": out["confidence"]})
         time.sleep(1)
     n = len(rows)
     return {
-        "kind": "water meter photos (public dataset)",
+        "kind": "water meter photos (public dataset, two reads reconciled)",
         "n": n,
         "exact_accuracy": round(exact / n, 3),
         "within_one_m3_accuracy": round(whole / n, 3),
-        "low_confidence_share": round(low_conf / n, 3),
-        "wrong_but_not_flagged": wrong_and_confident,
+        "flagged_for_checking_share": round(flagged / n, 3),
+        "wrong_to_the_m3_but_marked_high": confident_wrong,
         "misses": misses,
     }
 
