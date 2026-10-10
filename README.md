@@ -47,7 +47,7 @@ flowchart LR
 |---|---|
 | Web | Next.js 15 (App Router), TypeScript, Tailwind CSS 4, next-intl, Radix, TanStack Query, MapLibre with OpenFreeMap |
 | API | Python 3.12, FastAPI on Lambda (arm64, Lambda Web Adapter), Pydantic, boto3 |
-| AI | Photo reading uses forced tool-use JSON through one provider layer (`services/api/app/services/ai.py`): Amazon Bedrock (Nova Lite) by default, or Gemini with a quota-aware fallback across models and a cache for identical requests. The copilot is a Strands Agents orchestrator with solar, water and waste specialist agents, streamed over Server-Sent Events |
+| AI | Photo reading uses forced tool-use JSON through one provider layer (`services/api/app/services/ai.py`): Amazon Bedrock (Nova Lite) by default, or Gemini with a quota-aware fallback across models, then Groq, and a cache for identical requests. Meter photos get a second, independent read from a different model. The copilot is a Strands Agents orchestrator with solar, water and waste specialist agents, streamed over Server-Sent Events |
 | Data | DynamoDB single-table design, S3 for short-lived uploads, Cognito for sign-in |
 | Infra | AWS SAM (`infra/template.yaml`), Amplify Gen 2 (`amplify/`) |
 
@@ -81,7 +81,7 @@ Measured with `scripts/eval_photos.py` against the live provider (sample sizes a
 |---|---|---|
 | Bills | 5 synthetic bills (rendered with known values, then rotated, blurred and shaded) | Units, billing period, amount, DISCOM and sanctioned load all read correctly in 5 of 5. Synthetic, so this tests reading and the code checks, not the range of real bill layouts |
 | Waste | 15 TrashNet photos (cardboard, glass, metal, paper, plastic) | The first item falls in the right material family in 15 of 15 |
-| Water meters | 10 photos from a public dataset, each read twice and reconciled in code | Exact to the litre: 5 of 10. Right to the nearest cubic metre: 7 of 10. Every doubtful reading is flagged for the user to check; none that was wrong by a whole cubic metre was marked high confidence |
+| Water meters | 20 photos from a public dataset. Each is read by two different models (a Gemini model and Qwen on Groq), and code reconciles the two | Within 1 m³ of the true reading: 17 of 20. Exact to the litre: 9 of 20 (the red fraction wheels are often caught mid-turn). 8 of 20 were flagged for the user to check; 1 was wrong by more than 1 m³ yet marked high confidence |
 
 Run `python scripts/fetch_eval_photos.py` to download the sample photos, then `python scripts/eval_photos.py`. Every photo reading goes through a confirm screen before anything is saved. Copilot routing is measured with `scripts/eval_copilot.py`.
 

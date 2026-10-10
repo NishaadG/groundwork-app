@@ -49,6 +49,12 @@ class Settings(BaseSettings):
         "gemini-3.7-flash,gemini-3.8-flash"
     )
     ai_reasoning_effort: str = ""
+    # Groq (free, OpenAI-compatible): tried after the Gemini models, and used as the
+    # independent second reader for meter photos
+    ai_groq_base_url: str = "https://api.groq.com/openai/v1"
+    ai_groq_model: str = "qwen/qwen3.8-27b"
+    ai_groq_key_param: str = ""
+    ai_groq_api_key: str = ""
     # Reuse the stored answer for an identical photo and prompt (saves free-tier quota)
     ai_cache: bool = False
     ai_key_param: str = ""

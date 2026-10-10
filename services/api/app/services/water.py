@@ -437,8 +437,9 @@ def _enhanced(block: dict[str, Any]) -> dict[str, Any]:
     return {"image": {"format": "jpeg", "source": {"bytes": out.getvalue()}}}
 
 
-def _read_once(block: dict[str, Any]) -> dict[str, Any]:
-    res = extraction.bedrock().converse(
+def _read_once(block: dict[str, Any], *, second: bool = False) -> dict[str, Any]:
+    model = extraction.second_opinion() if second else extraction.bedrock()
+    res = model.converse(
         modelId=get_settings().vision_model_id,
         messages=[{"role": "user", "content": [block, {"text": METER_PROMPT}]}],
         toolConfig={
@@ -469,7 +470,7 @@ def read_meter_image(block: dict[str, Any]) -> dict[str, Any]:
     """
     first = _read_once(block)
     try:
-        second = _read_once(_enhanced(block))
+        second = _read_once(_enhanced(block), second=True)
     except Exception:
         second = None  # the first read alone cannot be cross-checked, so it can't be `high`
     unit = first.get("unit", "unknown")

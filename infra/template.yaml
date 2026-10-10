@@ -47,6 +47,10 @@ Parameters:
     Type: String
     Default: gemini-3.6-flash
     Description: Model for the copilot (its own free-tier quota); empty = AiModel
+  AiGroqKeyParam:
+    Type: String
+    Default: /groundwork/ai-key-groq
+    Description: SSM SecureString holding a Groq API key (empty = Groq is not used)
   AiFallbackModels:
     Type: String
     Default: gemini-3.5-flash-lite,gemini-3.1-flash-lite,gemini-3.6-flash,gemini-3.7-flash,gemini-3.8-flash
@@ -178,6 +182,7 @@ Resources:
           AI_KEY_PARAM: !Ref AiKeyParam
           AI_FALLBACK_MODELS: !Ref AiFallbackModels
           AI_COPILOT_MODEL: !Ref AiCopilotModel
+          AI_GROQ_KEY_PARAM: !Ref AiGroqKeyParam
           AI_CACHE: "true"
           EMAIL_FROM: !Ref EmailFrom
           SITE_URL: !Ref SiteUrl
@@ -207,7 +212,9 @@ Resources:
             - Sid: ReadAiKey
               Effect: Allow
               Action: ssm:GetParameter
-              Resource: !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${AiKeyParam}
+              Resource:
+                - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${AiKeyParam}
+                - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter${AiGroqKeyParam}
         - !If
           - HasUserPool
           - Statement:

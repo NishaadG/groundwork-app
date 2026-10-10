@@ -168,3 +168,50 @@ def test_identical_request_is_answered_from_the_cache(
     other = {"image": {"format": "jpeg", "source": {"bytes": b"another-photo"}}}
     client.converse(**converse_request(other))
     assert len(fake.calls) == 2
+
+
+def test_groq_is_tried_after_every_gemini_model_is_out_of_quota() -> None:
+    gemini = FakeOpenAI(error=type("RateLimitError", (Exception,), {})("quota"))
+    groq = FakeOpenAI(completion(json.dumps({"reading": 9})))
+    client = ai.OpenAIConverse(gemini, "g1", ("g2",), extra=((groq, "llama"),))
+    res = client.converse(**converse_request({"text": "hi"}))
+    assert [c["model"] for c in gemini.calls] == ["g1", "g2"]
+    assert [c["model"] for c in groq.calls] == ["llama"]
+    assert res["model"] == "llama"
+    assert res["output"]["message"]["content"][0]["toolUse"]["input"] == {"reading": 9}
+
+
+def test_groq_first_reader_uses_gemini_only_as_backup() -> None:
+    gemini = FakeOpenAI(completion(json.dumps({"reading": 1})))
+    groq = FakeOpenAI(error=type("RateLimitError", (Exception,), {})("quota"))
+    client = ai.OpenAIConverse(groq, "llama", (), extra=((gemini, "g1"),))
+    res = client.converse(**converse_request({"text": "hi"}))
+    assert [c["model"] for c in groq.calls] == ["llama"]
+    assert [c["model"] for c in gemini.calls] == ["g1"]
+    assert res["model"] == "g1"
+
+
+def test_second_opinion_is_the_same_reader_when_groq_is_not_set_up(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    get_settings.cache_clear()
+    sentinel = object()
+    monkeypatch.setattr(extraction, "bedrock", lambda: sentinel)
+    assert extraction.second_opinion() is sentinel
+
+
+def test_groq_key_comes_from_the_environment_or_is_unavailable(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    ai.groq_key.cache_clear()
+    monkeypatch.setenv("AI_GROQ_API_KEY", "")
+    monkeypatch.setenv("AI_GROQ_KEY_PARAM", "")
+    get_settings.cache_clear()
+    assert not ai.groq_configured()
+    with pytest.raises(ai.AiUnavailable):
+        ai.groq_key()
+    monkeypatch.setenv("AI_GROQ_API_KEY", "k")
+    get_settings.cache_clear()
+    ai.groq_key.cache_clear()
+    assert ai.groq_configured() and ai.groq_key() == "k"
+    ai.groq_key.cache_clear()

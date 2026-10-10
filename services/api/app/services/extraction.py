@@ -94,6 +94,11 @@ def bedrock() -> Any:
     return ai.client()
 
 
+def second_opinion() -> Any:
+    """A reader on another provider for cross-checks (the same client when none is set up)."""
+    return ai.second_opinion() if ai.groq_configured() else bedrock()
+
+
 def _image_block(data: bytes, content_type: str) -> dict[str, Any]:
     if content_type == "application/pdf":
         return {"document": {"format": "pdf", "name": "bill", "source": {"bytes": data}}}

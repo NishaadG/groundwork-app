@@ -49,6 +49,25 @@ def api_key() -> str:
     return str(ssm.get_parameter(Name=s.ai_key_param, WithDecryption=True)["Parameter"]["Value"])
 
 
+@cache
+def groq_key() -> str:
+    """Groq's key: AI_GROQ_API_KEY for local runs, else the SSM SecureString."""
+    s = get_settings()
+    if s.ai_groq_api_key:
+        return s.ai_groq_api_key
+    if not s.ai_groq_key_param:
+        raise AiUnavailable("no Groq key configured")
+    ssm = boto3.client("ssm", region_name=s.aws_region)
+    return str(
+        ssm.get_parameter(Name=s.ai_groq_key_param, WithDecryption=True)["Parameter"]["Value"]
+    )
+
+
+def groq_configured() -> bool:
+    s = get_settings()
+    return bool(s.ai_groq_api_key or s.ai_groq_key_param)
+
+
 def openai_params(temperature: float, max_tokens: int) -> dict[str, Any]:
     s = get_settings()
     params: dict[str, Any] = {"temperature": temperature, "max_tokens": max_tokens}
@@ -177,21 +196,35 @@ def _cache_put(key: str, out: dict[str, Any]) -> None:
 class OpenAIConverse:
     """A Bedrock-runtime look-alike over an OpenAI-compatible client (only `.converse`)."""
 
-    def __init__(self, client: Any, model: str, fallbacks: tuple[str, ...] = ()) -> None:
+    def __init__(
+        self,
+        client: Any,
+        model: str,
+        fallbacks: tuple[str, ...] = (),
+        extra: tuple[tuple[Any, str], ...] = (),
+    ) -> None:
         self.client = client
         self.model = model
         self.fallbacks = fallbacks
+        self.extra = extra  # (client, model) pairs on another provider, tried last
 
     def converse(self, *, modelId: str = "", **kw: Any) -> dict[str, Any]:  # noqa: N803
         """Try the main model, then each fallback when one is out of quota (free-tier limits
-        are per model) or gone."""
-        key = _cache_key(to_openai("", **kw)) if get_settings().ai_cache else None
+        are per model) or gone, then any models on another provider."""
+        backends = [(self.client, m) for m in (self.model, *self.fallbacks)] + list(self.extra)
+        # Keyed by the first model too, so a second opinion from another provider isn't
+        # answered by the first provider's cached reply.
+        key = (
+            _cache_key({**to_openai("", **kw), "first": backends[0][1]})
+            if get_settings().ai_cache
+            else None
+        )
         if key and (hit := _cache_get(key)):
             return hit
         failure: AiUnavailable | None = None
-        for model in (self.model, *self.fallbacks):
+        for client, model in backends:
             try:
-                out = self._one(to_openai(model, **kw))
+                out = self._one(client, to_openai(model, **kw))
                 out["model"] = model
                 if key and any("toolUse" in p for p in out["output"]["message"]["content"]):
                     _cache_put(key, out)
@@ -202,12 +235,12 @@ class OpenAIConverse:
         assert failure is not None
         raise failure
 
-    def _one(self, req: dict[str, Any]) -> dict[str, Any]:
+    def _one(self, client: Any, req: dict[str, Any]) -> dict[str, Any]:
         out: dict[str, Any] = {}
         # A forced tool is sometimes answered with text instead; ask once more.
         for _ in range(2 if "tool_choice" in req else 1):
             try:
-                res = self.client.chat.completions.create(**req)
+                res = client.chat.completions.create(**req)
             except Exception as exc:
                 if type(exc).__name__ in _UNAVAILABLE:
                     raise AiUnavailable(f"{type(exc).__name__}: {exc}") from exc
@@ -218,15 +251,52 @@ class OpenAIConverse:
         return out
 
 
-@cache
-def _openai_converse() -> OpenAIConverse:
+def _gemini_backend() -> tuple[Any, str, tuple[str, ...]]:
     import openai
 
     s = get_settings()
-    return OpenAIConverse(
+    return (
         openai.OpenAI(api_key=api_key(), base_url=s.ai_base_url, timeout=45, max_retries=0),
         s.ai_model,
         tuple(m.strip() for m in s.ai_fallback_models.split(",") if m.strip()),
+    )
+
+
+def _groq_backend() -> tuple[Any, str] | None:
+    """Groq's OpenAI-compatible endpoint, when a key is configured and readable."""
+    if not groq_configured():
+        return None
+    import openai
+
+    s = get_settings()
+    try:
+        key = groq_key()
+    except Exception:
+        log.warning("Groq key unavailable; skipping it", exc_info=True)
+        return None
+    return (
+        openai.OpenAI(api_key=key, base_url=s.ai_groq_base_url, timeout=45, max_retries=0),
+        s.ai_groq_model,
+    )
+
+
+@cache
+def _openai_converse() -> OpenAIConverse:
+    """Gemini models first, then Groq once they are all out of quota."""
+    gclient, model, fallbacks = _gemini_backend()
+    groq = _groq_backend()
+    return OpenAIConverse(gclient, model, fallbacks, extra=(groq,) if groq else ())
+
+
+@cache
+def _groq_first() -> OpenAIConverse | None:
+    """Groq first and Gemini behind it: an independent second reader for cross-checks."""
+    groq = _groq_backend()
+    if not groq:
+        return None
+    gclient, model, fallbacks = _gemini_backend()
+    return OpenAIConverse(
+        groq[0], groq[1], (), extra=tuple((gclient, m) for m in (model, *fallbacks))
     )
 
 
@@ -235,3 +305,10 @@ def client() -> Any:
     if get_settings().ai_provider in ("openai", "gemini"):
         return _openai_converse()
     return _bedrock()
+
+
+def second_opinion() -> Any:
+    """A reader on a different provider than client(), when one is configured."""
+    if get_settings().ai_provider in ("openai", "gemini"):
+        return _groq_first() or _openai_converse()
+    return client()
