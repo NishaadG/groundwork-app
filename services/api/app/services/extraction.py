@@ -7,7 +7,9 @@ confirm screen makes the user look at it.
 Text read from the image is data only and never acted on.
 """
 
+import hashlib
 import io
+import json
 import logging
 import re
 import time
@@ -84,6 +86,7 @@ class Extraction(BaseModel):
     fields: dict[str, Field_]
     history: list[dict[str, Any]]
     consumer_name_masked: str | None
+    sample: bool = False  # a saved reading of the built-in sample bill, not a fresh AI read
 
 
 # ---- Bedrock ----
@@ -294,6 +297,21 @@ def interpret(raw: dict[str, Any]) -> Extraction:
     )
 
 
+_DATA = Path(__file__).parent.parent / "data"
+
+
+def _saved_sample(data: bytes) -> dict[str, Any] | None:
+    """The saved AI reading of the built-in sample bill, only for that exact image.
+    Lets a visitor try the flow when every free AI quota is used up."""
+    try:
+        sample = (_DATA / "sample_bill.jpg").read_bytes()
+        if hashlib.sha256(data).digest() != hashlib.sha256(sample).digest():
+            return None
+        return dict(json.loads((_DATA / "sample_bill_reading.json").read_text(encoding="utf-8")))
+    except OSError:
+        return None
+
+
 def extract_bill(sub: str, key: str) -> Extraction:
     if not storage.owns_key(sub, key) or "/bill/" not in key:
         raise ApiError(404, "upload_not_found", "That upload isn't in your account.")
@@ -305,13 +323,19 @@ def extract_bill(sub: str, key: str) -> Extraction:
     if int(obj["ContentLength"]) > s.max_upload_bytes:
         raise ApiError(413, "file_too_large", "That file is too large.")
     check_rate_limit(sub)
-    block = _image_block(obj["Body"].read(), obj.get("ContentType", "image/jpeg"))
+    data = obj["Body"].read()
+    block = _image_block(data, obj.get("ContentType", "image/jpeg"))
     try:
         raw = call_model(block)
     except ApiError:
         raise
     except Exception as exc:
         log.exception("bedrock extraction failed")
+        saved = _saved_sample(data)
+        if saved is not None:
+            result = interpret(saved)
+            result.sample = True
+            return result
         if ai_unavailable(exc):
             raise unavailable_error() from exc
         raise ApiError(502, "extraction_failed", "We couldn't read this bill.") from exc

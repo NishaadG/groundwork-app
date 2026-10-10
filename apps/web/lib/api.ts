@@ -163,6 +163,7 @@ export interface Extraction {
   fields: Record<string, ExtractedField>;
   history: { month: string; units: number }[];
   consumer_name_masked: string | null;
+  sample?: boolean;
 }
 
 export interface BillIn {

@@ -800,6 +800,7 @@
       "chooseFile": "Choose a file",
       "fileHint": "JPG, PNG or PDF, up to 10 MB.",
       "typeIt": "Type the numbers in instead",
+      "useSample": "Try it with a sample bill",
       "or": "or",
       "steps": {
         "uploading": "Uploading your bill",
@@ -821,6 +822,7 @@
       "introManual": "You'll find these on your electricity bill.",
       "checkCount": "{count, plural, one {# field needs a look} other {# fields need a look}}",
       "checkThis": "Please check this",
+      "savedSample": "This is the sample bill. The AI was busy, so this is the saved reading from an earlier read of this exact photo. Check it as you would your own.",
       "issues": {
         "period_length": "The billing period looks unusual.",
         "not_a_date": "We couldn't read this date.",

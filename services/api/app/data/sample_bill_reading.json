@@ -1,0 +1,74 @@
+{
+ "consumer_category": {
+  "value": "LT I(B) Residential",
+  "confidence": "high",
+  "evidence": "LT I(B) Residential 1-Phase"
+ },
+ "units_consumed_kwh": {
+  "confidence": "high",
+  "evidence": "312",
+  "value": 312
+ },
+ "discom": {
+  "evidence": "MAHARASHTRA STATE ELECTRICITY DISTRIBUTION CO. LTD.",
+  "value": "MAHARASHTRA STATE ELECTRICITY DISTRIBUTION CO. LTD.",
+  "confidence": "high"
+ },
+ "sanctioned_load_kw": {
+  "value": 3,
+  "confidence": "high",
+  "evidence": "3.00 KW"
+ },
+ "billing_period_end": {
+  "confidence": "high",
+  "evidence": "31-08-2026",
+  "value": "2026-08-31"
+ },
+ "supply_phase": {
+  "evidence": "1-Phase",
+  "confidence": "high",
+  "value": "single"
+ },
+ "total_amount_inr": {
+  "evidence": "3,461.50",
+  "confidence": "high",
+  "value": 3461.5
+ },
+ "consumer_name": {
+  "value": "SHRI R. K. DESHPANDE",
+  "confidence": "high",
+  "evidence": "SHRI R. K. DESHPANDE"
+ },
+ "billing_period_start": {
+  "confidence": "high",
+  "value": "2026-08-01",
+  "evidence": "01-08-2026"
+ },
+ "fac_amount_inr": {
+  "value": 45.2,
+  "evidence": "45.20",
+  "confidence": "high"
+ },
+ "history": [
+  {
+   "units": 335,
+   "month": "2026-07"
+  },
+  {
+   "month": "2026-06",
+   "units": 402
+  },
+  {
+   "month": "2026-05",
+   "units": 451
+  },
+  {
+   "units": 388,
+   "month": "2026-04"
+  },
+  {
+   "month": "2026-03",
+   "units": 290
+  }
+ ]
+}

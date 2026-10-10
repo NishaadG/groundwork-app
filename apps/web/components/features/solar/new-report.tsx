@@ -53,6 +53,7 @@ interface Draft {
   name: string | null;
   source: "manual" | "photo";
   s3Key: string | null;
+  saved: boolean;
 }
 
 function emptyDraft(discom: string | null | undefined, load: number | null | undefined, supply: "single" | "three" | null | undefined): Draft {
@@ -72,6 +73,7 @@ function emptyDraft(discom: string | null | undefined, load: number | null | und
     name: null,
     source: "manual",
     s3Key: null,
+    saved: false,
   };
 }
 
@@ -86,7 +88,7 @@ const FIELD_MAP: Record<string, keyof Draft> = {
 };
 
 function draftFromExtraction(e: Extraction, base: Draft, s3Key: string): Draft {
-  const d: Draft = { ...base, source: "photo", s3Key, confidence: {}, issues: {}, evidence: {} };
+  const d: Draft = { ...base, source: "photo", s3Key, saved: e.sample === true, confidence: {}, issues: {}, evidence: {} };
   for (const [src, dst] of Object.entries(FIELD_MAP)) {
     const f = e.fields[src];
     if (!f) continue;
@@ -186,6 +188,17 @@ export function NewReport() {
       discom: d.discom || profile?.discom || "",
     }));
     setStage("confirm");
+  };
+
+  const useSample = async () => {
+    setProblem(null);
+    try {
+      const res = await fetch("/sample-bill.jpg");
+      const blob = await res.blob();
+      await onFile(new File([blob], "sample-bill.jpg", { type: "image/jpeg" }));
+    } catch {
+      setProblem(t("new.uploadFailed"));
+    }
   };
 
   const onFile = async (file: File | undefined) => {
@@ -336,9 +349,14 @@ export function NewReport() {
             {t("new.or")}
             <span className="h-px flex-1 bg-concrete" />
           </div>
-          <Button variant="link" onClick={() => startManual(null)}>
-            {t("new.typeIt")}
-          </Button>
+          <div className="flex flex-wrap gap-x-6">
+            <Button variant="link" onClick={() => void useSample()} data-testid="use-sample-bill">
+              {t("new.useSample")}
+            </Button>
+            <Button variant="link" onClick={() => startManual(null)}>
+              {t("new.typeIt")}
+            </Button>
+          </div>
         </section>
       )}
 
@@ -364,6 +382,11 @@ export function NewReport() {
             <p role="alert" className="mt-4 flex items-center gap-2 text-sm text-alert">
               <AlertTriangle aria-hidden className="size-4" strokeWidth={2} />
               {tc("checkCount", { count: lowCount })}
+            </p>
+          )}
+          {draft.saved && (
+            <p role="status" className="mt-4 rounded-input border border-concrete bg-parapet px-3 py-2.5 text-sm">
+              {tc("savedSample")}
             </p>
           )}
           {draft.name && <p className="mt-4 type-small text-cell-muted">{tc("name")}: {draft.name}</p>}

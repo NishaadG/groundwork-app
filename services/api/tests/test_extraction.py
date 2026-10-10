@@ -175,3 +175,32 @@ def test_injected_instructions_are_just_data() -> None:
     out = extraction.interpret(raw)
     assert out.discom_id == "other"
     assert out.fields["units_consumed_kwh"].value == 280
+
+
+class DownBedrock:
+    def converse(self, **kwargs: Any) -> dict[str, Any]:
+        raise extraction.ai.AiUnavailable("every free quota is used up")
+
+
+def test_sample_bill_falls_back_to_its_saved_reading(
+    client: TestClient, mint_token: MintToken, aws: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(extraction, "bedrock", lambda: DownBedrock())
+    key = "uploads/reader/bill/sample.jpg"
+    put_upload(aws, key, (extraction._DATA / "sample_bill.jpg").read_bytes())
+    r = client.post("/v1/bills/extract", headers=auth(mint_token), json={"s3_key": key})
+    assert r.status_code == 200, r.json()
+    data = r.json()["data"]
+    assert data["sample"] is True
+    assert data["discom_id"] == "msedcl"
+    assert data["fields"]["units_consumed_kwh"]["value"] == 312
+
+
+def test_other_photos_get_no_saved_reading_when_ai_is_down(
+    client: TestClient, mint_token: MintToken, aws: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(extraction, "bedrock", lambda: DownBedrock())
+    key = "uploads/reader/bill/other.jpg"
+    put_upload(aws, key, jpeg_bytes())
+    r = client.post("/v1/bills/extract", headers=auth(mint_token), json={"s3_key": key})
+    assert r.status_code == 503
