@@ -47,6 +47,20 @@ class ChatIn(BaseModel):
 def bedrock_model(role: copilot.Role) -> Model:
     s = get_settings()
     temperature = 0.2 if role == "orchestrator" else 0.3
+    if s.ai_provider in ("gemini", "openai") and ai.groq_configured():
+        # Groq has far higher free limits than a single Gemini model, so the copilot never
+        # sits on "Thinking" when a model's daily quota runs out.
+        from strands.models.openai import OpenAIModel
+
+        return OpenAIModel(
+            client_args={"api_key": ai.groq_key(), "base_url": s.ai_groq_base_url},
+            model_id=s.ai_groq_model,
+            params={
+                "temperature": temperature,
+                "max_tokens": 1500,
+                "extra_body": {"reasoning_format": "hidden"},
+            },
+        )
     if s.ai_provider == "gemini":
         from strands.models.gemini import GeminiModel
 
