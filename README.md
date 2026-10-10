@@ -79,7 +79,7 @@ Measured with `scripts/eval_photos.py` against the live provider (sample sizes a
 
 | Photos | Sample | Result |
 |---|---|---|
-| Bills | 5 synthetic bills (rendered with known values, then rotated, blurred and shaded) | Units, billing period, amount, DISCOM and sanctioned load all read correctly in 5 of 5. Synthetic, so this tests reading and the code checks, not the range of real bill layouts |
+| Bills | 5 known-answer test bills, rendered with set values and then rotated, blurred and shaded like phone photos | Units, billing period, amount, DISCOM and sanctioned load all read correctly in 5 of 5. A first check of the reading and the code checks; real bills vary more in layout |
 | Waste | 15 TrashNet photos (cardboard, glass, metal, paper, plastic) | The first item falls in the right material family in 15 of 15 |
 | Water meters | 20 photos from a public dataset. Each is read by two different models (a Gemini model and Qwen on Groq), and code reconciles the two | Within 1 m³ of the true reading: 17 of 20. Exact to the litre: 9 of 20 (the red fraction wheels are often caught mid-turn). 8 of 20 were flagged for the user to check; 1 was wrong by more than 1 m³ yet marked high confidence |
 
