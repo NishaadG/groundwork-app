@@ -1,5 +1,0 @@
-
-	Managed S3 bucket: aws-sam-cli-managed-default-samclisourcebucket-dsijs5snkfx6
-	Auto resolution of buckets can be turned off by setting resolve_s3=False
-	To use a specific S3 bucket, set --s3-bucket=<bucket_name>
-	Above settings can be stored in samconfig.toml
