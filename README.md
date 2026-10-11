@@ -4,6 +4,8 @@
 
 **Live app:** https://sample-bill.dj7ciboa1zoj1.amplifyapp.com · click **Try the demo** to open a sample household, no sign-up. No bill to hand? On the solar page, click **Try it with a sample bill**.
 
+**Demo video (2:51):** https://youtu.be/elE1k2Ifn9U
+
 Groundwork is a resource-savings app for Indian homes and housing societies. It starts from what a household already has, an electricity bill, a water meter and a pile of waste, and turns each into a concrete action with a rupee figure on it. Everything that actually changes is tracked in one ledger: **₹ saved · kWh · litres · kg kept out of landfill · CO₂ avoided**.
 
 ## What it does
