@@ -9,8 +9,8 @@ applications:
             - npm install -g pnpm@12.8.2
             # Commands run from apps/web; --dir points pnpm at the repo root without cd
             - pnpm --dir ../.. install --frozen-lockfile
-            # Deploys amplify/ (Cognito) and writes apps/web/amplify_outputs.json
-            - pnpm --dir ../.. exec ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID --outputs-out-dir apps/web
+            # main deploys amplify/ (Cognito); other branches reuse its sign-in (Cognito settings come from env vars)
+            - if [ "$AWS_BRANCH" = "main" ]; then pnpm --dir ../.. exec ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID --outputs-out-dir apps/web; else echo "Reusing the main branch sign-in"; fi
             # The frontend shares this container: drop the CDK tooling and its build output so
             # the server bundle stays small (otherwise packaging runs out of memory)
             - rm -rf ../../node_modules ../../.amplify

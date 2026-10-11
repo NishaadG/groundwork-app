@@ -190,7 +190,7 @@ export function NewReport() {
     setStage("confirm");
   };
 
-  const useSample = async () => {
+  const loadSample = async () => {
     setProblem(null);
     try {
       const res = await fetch("/sample-bill.jpg");
@@ -350,7 +350,7 @@ export function NewReport() {
             <span className="h-px flex-1 bg-concrete" />
           </div>
           <div className="flex flex-wrap gap-x-6">
-            <Button variant="link" onClick={() => void useSample()} data-testid="use-sample-bill">
+            <Button variant="link" onClick={() => void loadSample()} data-testid="use-sample-bill">
               {t("new.useSample")}
             </Button>
             <Button variant="link" onClick={() => startManual(null)}>
