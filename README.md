@@ -2,7 +2,7 @@
 
 **Know what your home runs on.**
 
-**Live app:** https://main.dj7ciboa1zoj1.amplifyapp.com · click **Try the demo** to open a sample household, no sign-up.
+**Live app:** https://sample-bill.dj7ciboa1zoj1.amplifyapp.com · click **Try the demo** to open a sample household, no sign-up. No bill to hand? On the solar page, click **Try it with a sample bill**.
 
 Groundwork is a resource-savings app for Indian homes and housing societies. It starts from what a household already has, an electricity bill, a water meter and a pile of waste, and turns each into a concrete action with a rupee figure on it. Everything that actually changes is tracked in one ledger: **₹ saved · kWh · litres · kg kept out of landfill · CO₂ avoided**.
 
@@ -11,7 +11,7 @@ Groundwork is a resource-savings app for Indian homes and housing societies. It 
 - **Solar and your bill.** Photograph an electricity bill. Groundwork reads it, you confirm the numbers, and it recalculates the bill from your DISCOM's tariff. It then sizes a rooftop system to your use, roof and sanctioned load, applies the PM Surya Ghar subsidy, and works out payback month by month at your own slab rates. Sunlight comes from NASA POWER for your exact roof.
 - **Water.** Take a meter or tank reading at night and again in the morning. If anything moved, something is leaking. Groundwork estimates the litres lost, walks you through finding the leak, and counts savings only once your readings show use has dropped. It also handles tank forecasts, tanker costs and a simulated smart-meter feed.
 - **Waste.** Photograph a pile. Groundwork sorts it into the four streams of the Solid Waste Management Rules, 2026 (wet, dry, sanitary, special care) plus e-waste. It shows an indicative scrap value and lets you request a pickup from a recycler listed near you.
-- **Copilot.** A chat that answers questions about your own electricity, water and waste in English, Hindi or Marathi. You can attach a photo, and answers come with cards (a solar summary, a leak alert, the items in a photo).
+- **Copilot (multi-agent).** An orchestrator agent, built with Strands Agents, hands each question to a solar, water or waste specialist agent. They work through 11 tools on the household's own data (bills, solar report, water, waste, local recyclers, and readers for an attached bill, meter or waste photo) and answer in English, Hindi or Marathi, with cards (a solar summary, a leak alert, the items in a photo). Every tool is bound to the signed-in user, and the agents never do arithmetic: they quote numbers the calculation code produced.
 - **Societies.** A housing society can see its combined savings, participation and leaks found. Households are ranked against their own past use, never against each other, and appear on the leaderboard only if they opt in.
 - **Reports.** A monthly report card, an impact report and a society report, all printable to PDF with every number's working and every source.
 
@@ -47,7 +47,7 @@ flowchart LR
 |---|---|
 | Web | Next.js 15 (App Router), TypeScript, Tailwind CSS 4, next-intl, Radix, TanStack Query, MapLibre with OpenFreeMap |
 | API | Python 3.12, FastAPI on Lambda (arm64, Lambda Web Adapter), Pydantic, boto3 |
-| AI | Photo reading uses forced tool-use JSON through one provider layer (`services/api/app/services/ai.py`): Amazon Bedrock (Nova Lite) by default, or Gemini with a quota-aware fallback across models, then Groq, and a cache for identical requests. Meter photos get a second, independent read from a different model. The copilot is a Strands Agents orchestrator with solar, water and waste specialist agents, streamed over Server-Sent Events |
+| AI | Photo reading uses forced tool-use JSON through one provider layer (`services/api/app/services/ai.py`): Amazon Bedrock (Nova Lite) by default, switched by one deploy parameter. AWS has not granted this new account Bedrock access yet, so the live demo runs on Gemini with a quota-aware fallback across models, then Groq, and a cache for identical requests. Meter photos get a second, independent read from a different model. The copilot is a Strands Agents orchestrator with solar, water and waste specialist agents, streamed over Server-Sent Events |
 | Data | DynamoDB single-table design, S3 for short-lived uploads, Cognito for sign-in |
 | Infra | AWS SAM (`infra/template.yaml`), Amplify Gen 2 (`amplify/`) |
 
